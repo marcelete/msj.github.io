@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bell Studio | Masajes Terapéuticos & Entrenamiento Personal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2d5a4a;
+            --primary-light: #3d7a60;
+            --secondary: #c9a97b;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 2px 30px rgba(0,0,0,0.15);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(45, 90, 74, 0.3);
+        }
+
+        .cta-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(45, 90, 74, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-30px, -30px) rotate(5deg); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            padding: 0 5%;
+            max-width: 900px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            margin-bottom: 40px;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+            padding: 16px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 16px 40px;
+            border: 2px solid white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator::before {
+            content: '↓';
+            font-size: 2rem;
+            color: white;
+            opacity: 0.7;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 5%;
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .service-card .duration {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 5%;
+            background: white;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-content h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .about-content h3 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .benefits-list li {
+            padding: 12px 0 12px 35px;
+            position: relative;
+            font-size: 1.05rem;
+            color: #555;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 5%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 60px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-5px);
+        }
+
+        .feature-item .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-item p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 5%;
+            background: var(--light);
+            text-align: center;
+        }
+
+        .cta-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .cta-box h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .cta-box p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .cta-box .btn-primary {
+            font-size: 1.2rem;
+            padding: 18px 50px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 5% 30px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: white;
+                flex-direction: column;
+                padding: 100px 40px;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+                transition: right 0.3s ease;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                order: -1;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-buttons a {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+        }
+
+        /* Animation on Scroll */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="logo">BELL STUDIO</div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio" onclick="closeMenu()">Inicio</a></li>
+                <li><a href="#servicios" onclick="closeMenu()">Servicios</a></li>
+                <li><a href="#sobre-mi" onclick="closeMenu()">Sobre Mí</a></li>
+                <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
+                <li><a href="#reservar" class="cta-btn" onclick="closeMenu()">Reservar Turno</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>Reconectá con tu Bienestar</h1>
+            <p>Masajes terapéuticos con estiramientos y entrenamiento personalizado para tu cuerpo y mente</p>
+            <div class="hero-buttons">
+                <a href="#reservar" class="btn-primary">Reservar Sesión</a>
+                <a href="#servicios" class="btn-secondary">Ver Servicios</a>
+            </div>
+        </div>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <section id="servicios" class="services">
+        <div class="section-title animate-on-scroll">
+            <h2>Nuestros Servicios</h2>
+            <p>Soluciones personalizadas para tu bienestar integral</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon">💆</div>
+                <h3>Masaje 60 minutos</h3>
+                <p>Sesión de masaje terapéutico con estiramientos por cadenas musculares. Ideal para aliviar tensiones y recuperar movilidad.</p>
+                <span class="duration">60 min</span>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon">🧘</div>
+                <h3>Masaje 90 minutos</h3>
+                <p>Sesión extendida para un trabajo profundo y completo. Incluye técnicas de relajación y estiramiento avanzado.</p>
+                <span class="duration">90 min</span>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon">✨</div>
+                <h3>Masaje 120 minutos</h3>
+                <p>La experiencia completa de bienestar. Máxima relajación con seguimiento personalizado de tu evolución.</p>
+                <span class="duration">120 min</span>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon">🏃</div>
+                <h3>Clases Personalizadas</h3>
+                <p>Entrenamiento presencial uno a uno adaptado a tus objetivos. Planificación exclusiva y seguimiento continuo.</p>
+                <span class="duration">Presencial</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-mi" class="about">
+        <div class="about-container">
+            <div class="about-image animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80" alt="Marcelo Bellizia - Profesor de Educación Física">
+            </div>
+            <div class="about-content animate-on-scroll">
+                <h2>Marcelo Bellizia</h2>
+                <h3>Profesor de Educación Física Especializado en Salud</h3>
+                <p>Con años de experiencia en el campo de la salud y el movimiento, me dedico a ayudar a las personas a reconectar con su cuerpo de manera consciente y efectiva.</p>
+                <p>En Bell Studio, combino técnicas de masaje terapéutico con estiramientos específicos por cadenas musculares, proporcionando un enfoque integral para el bienestar físico.</p>
+                <ul class="benefits-list">
+                    <li>Especialista en cadenas musculares</li>
+                    <li>Enfoque personalizado y seguimiento continuo</li>
+                    <li>Ambiente profesional y acogedor</li>
+                    <li>Resultados comprobados y duraderos</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="section-title">
+            <h2 style="color: white;">¿Por qué elegir Bell Studio?</h2>
+            <p style="color: rgba(255,255,255,0.9);">Tu bienestar es nuestra prioridad</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-item animate-on-scroll">
+                <div class="icon">🎯</div>
+                <h3>Atención Personalizada</h3>
+                <p>Cada sesión es única y adaptada a tus necesidades específicas</p>
+            </div>
+            <div class="feature-item animate-on-scroll">
+                <div class="icon">📊</div>
+                <h3>Seguimiento Continuo</h3>
+                <p>Monitoreamos tu progreso para optimizar resultados</p>
+            </div>
+            <div class="feature-item animate-on-scroll">
+                <div class="icon">🏆</div>
+                <h3>Experiencia Profesional</h3>
+                <p>Técnicas basadas en conocimiento científico actualizado</p>
+            </div>
+            <div class="feature-item animate-on-scroll">
+                <div class="icon">💚</div>
+                <h3>Ambiente Tranquilo</h3>
+                <p>Espacio diseñado para tu comodidad y relajación</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="reservar" class="cta-section">
+        <div class="cta-box animate-on-scroll">
+            <h2>Comenzá tu camino al bienestar</h2>
+            <p>Reservá tu primera sesión y descubrí cómo podemos ayudarte a sentirte mejor</p>
+            <a href="#" class="btn-primary" onclick="alert('Sistema de reservas próximamente. Por favor contactanos por WhatsApp o email.')">Reservar Ahora</a>
+        </div>
+    </section>
+
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Bell Studio</h3>
+                <p>Espacio dedicado al bienestar integral a través del movimiento consciente y terapias corporales.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Facebook">👤</a>
+                    <a href="#" aria-label="WhatsApp">💬</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Servicios</h3>
+                <a href="#servicios">Masajes 60 min</a>
+                <a href="#servicios">Masajes 90 min</a>
+                <a href="#servicios">Masajes 120 min</a>
+                <a href="#servicios">Clases Personalizadas</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p>📍 Buenos Aires, Argentina</p>
+                <p>📧 info@bellstudio.com.ar</p>
+                <p>📱 +54 9 11 XXXX-XXXX</p>
+                <p>🕐 Lun - Vie: 9:00 - 20:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bell Studio. Todos los derechos reservados. | Diseñado con 💚 para tu bienestar</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Animate on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Mobile menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
