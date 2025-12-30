@@ -1,171 +1,694 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bell Studio | Ritual de Masaje en San Telmo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --color-cream: #FDFCFB;
-            --color-earth: #7A694A; /* Un tono tierra un poco más profundo para "Bell" */
+            --color-earth: #7A694A;
             --color-text: #2C2C2C;
+            --color-light-gray: #F5F5F5;
+            --color-border: #E5E5E5;
         }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--color-cream);
             color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        h1, h2, h3, .font-serif {
+
+        h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
-        .bg-earth { background-color: var(--color-earth); }
-        .text-earth { color: var(--color-earth); }
-        .border-earth { border-color: var(--color-earth); }
-        
-        .hero-gradient {
+
+        /* Header */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-earth);
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--color-text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-earth);
+        }
+
+        .btn-reservar {
+            background: var(--color-earth);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reservar:hover {
+            background: #6a5a3f;
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
             background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            padding: 0 6%;
+            max-width: 1000px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            font-style: italic;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            opacity: 0.95;
+            margin-bottom: 50px;
+            letter-spacing: 0.05em;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .btn-hero {
+            display: inline-block;
+            border: 1px solid white;
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .btn-hero:hover {
+            background: white;
+            color: var(--color-earth);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* El Ritual */
+        .ritual {
+            padding: 120px 6%;
+            background: white;
+        }
+
+        .ritual-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .ritual-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .section-label {
+            color: var(--color-earth);
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+        }
+
+        .ritual h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--color-text);
+        }
+
+        .ritual-description {
+            font-size: 1.125rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .phases {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .phase {
+            display: flex;
+            gap: 24px;
+        }
+
+        .phase-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            color: var(--color-earth);
+        }
+
+        .phase-content h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+
+        .phase-content p {
+            font-size: 0.875rem;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .ritual-image-container {
+            position: relative;
+        }
+
+        .ritual-image {
+            width: 100%;
+            border-radius: 10px;
+            filter: grayscale(20%);
+        }
+
+        .ritual-badge {
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            background: var(--color-cream);
+            padding: 40px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .ritual-badge-time {
+            font-size: 2.5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--color-earth);
+        }
+
+        .ritual-badge-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #ccc;
+        }
+
+        /* Profesional */
+        .profesional {
+            padding: 120px 6%;
+            background: var(--color-cream);
+        }
+
+        .profesional-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .profesional-image-container {
+            flex: 1;
+        }
+
+        .profesional-image {
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            border: 8px solid white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            margin: 0 auto;
+            display: block;
+        }
+
+        .profesional-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .profesional h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .profesional-title {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--color-earth);
+            font-weight: 700;
+        }
+
+        .profesional p {
+            font-size: 0.875rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Reserva */
+        .reserva {
+            padding: 120px 6%;
+            background: var(--color-text);
+            color: white;
+        }
+
+        .reserva-container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .reserva h2 {
+            text-align: center;
+            font-size: 0.875rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 80px;
+        }
+
+        .reserva-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .reserva-card {
+            background: rgba(255,255,255,0.05);
+            padding: 60px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .reserva-card h3 {
+            font-size: 1.75rem;
+            font-style: italic;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .reserva-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-earth);
+        }
+
+        .reserva-details {
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            opacity: 0.7;
+            letter-spacing: 0.05em;
+        }
+
+        .reserva-detail-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-whatsapp {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--color-earth);
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background: #6a5a3f;
+        }
+
+        .reserva-protocol {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding: 24px;
+        }
+
+        .reserva-protocol h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .protocol-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .protocol-step {
+            display: flex;
+            gap: 16px;
+        }
+
+        .protocol-number {
+            color: var(--color-earth);
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .protocol-text {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 6%;
+            background: white;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.6rem;
+            color: #ccc;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--color-text);
+            transition: all 0.3s;
+        }
+
+        /* Icons */
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 80%;
+                background: white;
+                flex-direction: column;
+                padding: 100px 40px;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+                transition: right 0.3s ease;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .ritual-container,
+            .profesional-container,
+            .reserva-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .ritual-badge {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
         }
     </style>
 </head>
-<body class="antialiased">
-
-    <!-- Header -->
-    <header class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <i data-lucide="circle-dot" class="text-earth"></i>
-                <span class="text-xl font-bold tracking-[0.3em] uppercase">Bell Studio</span>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-circle"></div>
+                <span class="logo-text">Bell Studio</span>
             </div>
             
-            <nav class="hidden md:flex items-center gap-10 text-xs font-medium tracking-widest uppercase">
-                <a href="#inicio" class="hover:text-earth transition-colors">Inicio</a>
-                <a href="#ritual" class="hover:text-earth transition-colors">El Ritual</a>
-                <a href="#profesional" class="hover:text-earth transition-colors">Perfil</a>
-                <a href="#reservar" class="bg-earth text-white px-8 py-2.5 rounded-full hover:bg-opacity-90 transition-all">Reservar</a>
-            </nav>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
-            <button class="md:hidden text-earth">
-                <i data-lucide="menu"></i>
-            </button>
-        </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio" onclick="closeMenu()">Inicio</a></li>
+                <li><a href="#ritual" onclick="closeMenu()">El Ritual</a></li>
+                <li><a href="#profesional" onclick="closeMenu()">Perfil</a></li>
+                <li><a href="#reservar" class="btn-reservar" onclick="closeMenu()">Reservar</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Hero -->
-    <section id="inicio" class="relative h-screen flex items-center justify-center">
-        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecee?auto=format&fit=crop&w=1920&q=80" alt="Espacio de Bell Studio en San Telmo" class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 hero-gradient"></div>
-        <div class="relative z-10 text-center text-white px-6">
-            <h1 class="text-6xl md:text-8xl font-bold mb-6 italic">Pausa Consciente.</h1>
-            <p class="text-lg md:text-xl font-light max-w-2xl mx-auto opacity-90 mb-10 tracking-wide">
-                90 minutos de integración corporal en el corazón de San Telmo.
-            </p>
-            <a href="#reservar" class="inline-block border border-white px-10 py-4 rounded-full text-xs uppercase tracking-[0.3em] hover:bg-white hover:text-earth transition-all">
-                Agendar Sesión
-            </a>
+    <section id="inicio" class="hero">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecee?auto=format&fit=crop&w=1920&q=80" alt="Espacio de Bell Studio en San Telmo" class="hero-image">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Pausa Consciente.</h1>
+            <p>90 minutos de integración corporal en el corazón de San Telmo.</p>
+            <a href="#reservar" class="btn-hero">Agendar Sesión</a>
         </div>
     </section>
 
-    <!-- El Ritual -->
-    <section id="ritual" class="py-24 bg-white">
-        <div class="container mx-auto px-6 max-w-6xl">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                <div class="space-y-10">
-                    <div class="space-y-4">
-                        <span class="text-earth font-bold tracking-[0.3em] uppercase text-[10px]">Estructura de la Sesión</span>
-                        <h2 class="text-4xl md:text-5xl font-bold leading-tight">Ritual Integral</h2>
+    <section id="ritual" class="ritual">
+        <div class="ritual-container">
+            <div class="ritual-content">
+                <div>
+                    <span class="section-label">Estructura de la Sesión</span>
+                    <h2>Ritual Integral</h2>
+                </div>
+                <p class="ritual-description">
+                    En <strong>Bell Studio</strong>, la sesión es un proceso de automatización inversa: liberamos los patrones rígidos del cuerpo para recuperar la fluidez natural.
+                </p>
+                <div class="phases">
+                    <div class="phase">
+                        <svg class="phase-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
+                        </svg>
+                        <div class="phase-content">
+                            <h4>Fase 1: Descompresión</h4>
+                            <p>Aromaterapia y contacto inicial para bajar el ritmo del sistema nervioso.</p>
+                        </div>
                     </div>
-                    <p class="text-gray-600 leading-relaxed text-lg">
-                        En **Bell Studio**, la sesión es un proceso de automatización inversa: liberamos los patrones rígidos del cuerpo para recuperar la fluidez natural.
-                    </p>
-                    <div class="space-y-8">
-                        <div class="flex gap-6">
-                            <i data-lucide="layers" class="text-earth w-6 h-6 flex-shrink-0"></i>
-                            <div>
-                                <h4 class="font-bold text-gray-800 uppercase tracking-widest text-xs mb-1">Fase 1: Descompresión</h4>
-                                <p class="text-sm text-gray-500">Aromaterapia y contacto inicial para bajar el ritmo del sistema nervioso.</p>
-                            </div>
+                    <div class="phase">
+                        <svg class="phase-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div class="phase-content">
+                            <h4>Fase 2: Liberación</h4>
+                            <p>Técnicas descontracturantes localizadas en zonas de carga crítica.</p>
                         </div>
-                        <div class="flex gap-6">
-                            <i data-lucide="target" class="text-earth w-6 h-6 flex-shrink-0"></i>
-                            <div>
-                                <h4 class="font-bold text-gray-800 uppercase tracking-widest text-xs mb-1">Fase 2: Liberación</h4>
-                                <p class="text-sm text-gray-500">Técnicas descontracturantes localizadas en zonas de carga crítica.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <i data-lucide="move" class="text-earth w-6 h-6 flex-shrink-0"></i>
-                            <div>
-                                <h4 class="font-bold text-gray-800 uppercase tracking-widest text-xs mb-1">Fase 3: Expansión</h4>
-                                <p class="text-sm text-gray-500">Estiramientos asistidos para devolver la amplitud al movimiento.</p>
-                            </div>
+                    </div>
+                    <div class="phase">
+                        <svg class="phase-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                        </svg>
+                        <div class="phase-content">
+                            <h4>Fase 3: Expansión</h4>
+                            <p>Estiramientos asistidos para devolver la amplitud al movimiento.</p>
                         </div>
                     </div>
                 </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80" alt="Masaje Terapéutico Bell Studio" class="rounded-lg grayscale-[20%]">
-                    <div class="absolute -bottom-10 -right-10 bg-[#FDFCFB] p-10 border border-gray-100 shadow-sm hidden md:block">
-                        <p class="text-4xl font-serif text-earth">90'</p>
-                        <p class="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400">Full Experience</p>
-                    </div>
+            </div>
+            <div class="ritual-image-container">
+                <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80" alt="Masaje Terapéutico Bell Studio" class="ritual-image">
+                <div class="ritual-badge">
+                    <p class="ritual-badge-time">90'</p>
+                    <p class="ritual-badge-label">Full Experience</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- El Profesional -->
-    <section id="profesional" class="py-24 bg-[#FDFCFB]">
-        <div class="container mx-auto px-6 max-w-4xl">
-            <div class="flex flex-col md:flex-row gap-16 items-center">
-                <div class="w-full md:w-1/2">
-                    <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=600&q=80" alt="Marcelo Bellizia" class="rounded-full w-64 h-64 object-cover mx-auto grayscale shadow-2xl border-8 border-white">
-                </div>
-                <div class="w-full md:w-1/2 space-y-6">
-                    <h2 class="text-3xl font-bold tracking-tight">Marcelo Bellizia</h2>
-                    <p class="text-xs uppercase tracking-[0.3em] text-earth font-bold">Fundador de Bell Studio</p>
-                    <p class="text-gray-600 leading-relaxed text-sm">
-                        Analista de Datos de profesión, terapeuta por vocación. Mi enfoque en Bell Studio combina la precisión de la estructura con la sensibilidad de la calma.
-                    </p>
-                    <p class="text-gray-600 leading-relaxed text-sm">
-                        Desde febrero de 2026, mi estudio en San Telmo es el punto de encuentro para quienes buscan un bienestar real, técnico y humano.
-                    </p>
-                </div>
+    <section id="profesional" class="profesional">
+        <div class="profesional-container">
+            <div class="profesional-image-container">
+                <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=600&q=80" alt="Marcelo Bellizia" class="profesional-image">
+            </div>
+            <div class="profesional-content">
+                <h2>Marcelo Bellizia</h2>
+                <p class="profesional-title">Fundador de Bell Studio</p>
+                <p>Analista de Datos de profesión, terapeuta por vocación. Mi enfoque en Bell Studio combina la precisión de la estructura con la sensibilidad de la calma.</p>
+                <p>Desde febrero de 2026, mi estudio en San Telmo es el punto de encuentro para quienes buscan un bienestar real, técnico y humano.</p>
             </div>
         </div>
     </section>
 
-    <!-- Reserva -->
-    <section id="reservar" class="py-24 bg-[#2C2C2C] text-white">
-        <div class="container mx-auto px-6 max-w-5xl text-center">
-            <h2 class="text-3xl font-bold mb-16 tracking-widest uppercase text-sm">Reservas Febrero 2026</h2>
+    <section id="reservar" class="reserva">
+        <div class="reserva-container">
+            <h2>Reservas Febrero 2026</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-                <div class="bg-white/5 p-12 rounded-lg border border-white/10 space-y-8">
-                    <h3 class="text-2xl font-serif italic">Ritual 90 Minutos</h3>
-                    <div class="text-4xl font-bold text-earth">$70.000</div>
-                    <ul class="text-xs space-y-4 opacity-70 tracking-wide text-left max-w-xs mx-auto">
-                        <li class="flex justify-between"><span>Seña confirmatoria:</span> <span>$35.000</span></li>
-                        <li class="flex justify-between"><span>Medio de pago:</span> <span>MP / Transferencia</span></li>
-                        <li class="flex justify-between"><span>Zona:</span> <span>San Telmo, CABA</span></li>
-                    </ul>
-                    <a href="https://wa.me/5491112345678" target="_blank" class="block w-full py-4 bg-earth text-white rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-opacity-80 transition-all">Solicitar Turno</a>
+            <div class="reserva-grid">
+                <div class="reserva-card">
+                    <h3>Ritual 90 Minutos</h3>
+                    <div class="reserva-price">$70.000</div>
+                    <div class="reserva-details">
+                        <div class="reserva-detail-item">
+                            <span>Seña confirmatoria:</span>
+                            <span>$35.000</span>
+                        </div>
+                        <div class="reserva-detail-item">
+                            <span>Medio de pago:</span>
+                            <span>MP / Transferencia</span>
+                        </div>
+                        <div class="reserva-detail-item">
+                            <span>Zona:</span>
+                            <span>San Telmo, CABA</span>
+                        </div>
+                    </div>
+                    <a href="turnero.html" class="btn-whatsapp">Reservar Turno Online</a>
                 </div>
-                <div class="text-left space-y-8 p-6">
-                    <h3 class="text-xl font-bold">Protocolo de Reserva</h3>
-                    <div class="space-y-6">
-                        <div class="flex gap-4">
-                            <span class="text-earth font-bold text-lg">01.</span>
-                            <p class="text-xs opacity-70 leading-relaxed">Consultá disponibilidad por WhatsApp. Te responderé personalmente para coordinar tu ritual.</p>
+                <div class="reserva-protocol">
+                    <h3>Protocolo de Reserva</h3>
+                    <div class="protocol-steps">
+                        <div class="protocol-step">
+                            <span class="protocol-number">01.</span>
+                            <p class="protocol-text">Seleccioná tu día y horario preferido en nuestro sistema de turnos online.</p>
                         </div>
-                        <div class="flex gap-4">
-                            <span class="text-earth font-bold text-lg">02.</span>
-                            <p class="text-xs opacity-70 leading-relaxed">Realizá la seña del 50%. Tenés un margen de 6 horas para enviar el comprobante y bloquear el horario.</p>
+                        <div class="protocol-step">
+                            <span class="protocol-number">02.</span>
+                            <p class="protocol-text">Realizá la seña del 50%. Tenés un margen de 6 horas para enviar el comprobante y bloquear el horario.</p>
                         </div>
-                        <div class="flex gap-4">
-                            <span class="text-earth font-bold text-lg">03.</span>
-                            <p class="text-xs opacity-70 leading-relaxed">Recibí la ubicación exacta de nuestro estudio boutique y preparate para tu pausa.</p>
+                        <div class="protocol-step">
+                            <span class="protocol-number">03.</span>
+                            <p class="protocol-text">Recibí la ubicación exacta de nuestro estudio boutique y preparate para tu pausa.</p>
                         </div>
                     </div>
                 </div>
@@ -173,15 +696,40 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-12 bg-white border-t border-gray-100 text-center">
-        <div class="container mx-auto px-6">
-            <p class="text-[9px] text-gray-400 uppercase tracking-[0.4em]">Bell Studio © 2026 — San Telmo, Buenos Aires</p>
-        </div>
+    <footer>
+        <p>Bell Studio © 2026 — San Telmo, Buenos Aires</p>
     </footer>
 
     <script>
-        lucide.createIcons();
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
