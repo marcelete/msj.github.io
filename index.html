@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bell Studio | Ritual de Masaje en San Telmo</title>
+    <title>Bell Studio | Masajes Profesionales en San Telmo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Mismos estilos base, ajustes menores para profesionalismo */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --color-cream: #FDFCFB;
             --color-earth: #7A694A;
@@ -19,548 +16,84 @@
             --color-light-gray: #F5F5F5;
             --color-border: #E5E5E5;
         }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--color-cream);
-            color: var(--color-text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: rgba(253, 252, 251, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--color-border);
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-circle {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--color-earth);
-        }
-
-        .logo-text {
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--color-text);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--color-text);
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--color-earth);
-        }
-
-        .btn-reservar {
-            background: var(--color-earth);
-            color: white;
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-reservar:hover {
-            background: #6a5a3f;
-            transform: translateY(-2px);
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--color-cream); color: var(--color-text); line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        
+        /* Header & Nav (Igual que antes) */
+        header { position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(253, 252, 251, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border); transition: all 0.3s ease; }
+        nav { max-width: 1400px; margin: 0 auto; padding: 20px 6%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none;}
+        .logo-circle { width: 8px; height: 8px; border-radius: 50%; background: var(--color-earth); }
+        .logo-text { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-text); }
+        .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--color-text); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--color-earth); }
+        .btn-reservar { background: var(--color-earth); color: white !important; padding: 12px 32px; border-radius: 50px; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; transition: all 0.3s ease; }
+        .btn-reservar:hover { background: #6a5a3f; transform: translateY(-2px); }
 
         /* Hero */
-        .hero {
-            height: 100vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; }
+        .hero-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)); }
+        .hero-content { position: relative; z-index: 10; text-align: center; color: white; padding: 0 6%; max-width: 1000px; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; font-style: italic; margin-bottom: 30px; animation: fadeInUp 1s ease; }
+        .hero p { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 300; opacity: 0.95; margin-bottom: 50px; letter-spacing: 0.05em; animation: fadeInUp 1s ease 0.2s both; }
+        .btn-hero { display: inline-block; border: 1px solid white; padding: 16px 50px; border-radius: 50px; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; text-decoration: none; color: white; transition: all 0.3s ease; animation: fadeInUp 1s ease 0.4s both; }
+        .btn-hero:hover { background: white; color: var(--color-earth); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero-image {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        /* Servicios (Anteriormente Ritual) */
+        .services-section { padding: 120px 6%; background: white; }
+        .services-header { text-align: center; margin-bottom: 80px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .section-label { color: var(--color-earth); font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; font-size: 0.65rem; display: block; margin-bottom: 20px; }
+        .services-header h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 30px; color: var(--color-text); }
+        .services-header p { font-size: 1.1rem; color: #666; }
 
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45));
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            color: white;
-            padding: 0 6%;
-            max-width: 1000px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            font-style: italic;
-            margin-bottom: 30px;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            font-weight: 300;
-            opacity: 0.95;
-            margin-bottom: 50px;
-            letter-spacing: 0.05em;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .btn-hero {
-            display: inline-block;
-            border: 1px solid white;
-            padding: 16px 50px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .btn-hero:hover {
-            background: white;
-            color: var(--color-earth);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* El Ritual */
-        .ritual {
-            padding: 120px 6%;
-            background: white;
-        }
-
-        .ritual-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .ritual-content {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        .section-label {
-            color: var(--color-earth);
-            font-weight: 700;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            font-size: 0.65rem;
-        }
-
-        .ritual h2 {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--color-text);
-        }
-
-        .ritual-description {
-            font-size: 1.125rem;
-            color: #666;
-            line-height: 1.8;
-        }
-
-        .phases {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        .phase {
-            display: flex;
-            gap: 24px;
-        }
-
-        .phase-icon {
-            width: 24px;
-            height: 24px;
-            flex-shrink: 0;
-            color: var(--color-earth);
-        }
-
-        .phase-content h4 {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--color-text);
-            margin-bottom: 8px;
-        }
-
-        .phase-content p {
-            font-size: 0.875rem;
-            color: #999;
-            line-height: 1.6;
-        }
-
-        .ritual-image-container {
-            position: relative;
-        }
-
-        .ritual-image {
-            width: 100%;
-            border-radius: 10px;
-            filter: grayscale(20%);
-        }
-
-        .ritual-badge {
-            position: absolute;
-            bottom: -40px;
-            right: -40px;
-            background: var(--color-cream);
-            padding: 40px;
-            border: 1px solid var(--color-border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        .ritual-badge-time {
-            font-size: 2.5rem;
-            font-family: 'Playfair Display', serif;
-            color: var(--color-earth);
-        }
-
-        .ritual-badge-label {
-            font-size: 0.6rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: #ccc;
-        }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+        .service-card { background: var(--color-light-gray); padding: 40px; border-radius: 10px; transition: transform 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-title { font-size: 1.5rem; font-family: 'Playfair Display', serif; margin-bottom: 15px; }
+        .service-desc { font-size: 0.9rem; color: #666; margin-bottom: 25px; line-height: 1.7; flex-grow: 1;}
+        .service-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 20px; }
+        .service-price { font-weight: 700; color: var(--color-earth); font-size: 1.1rem; }
+        .service-time { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: #999; }
 
         /* Profesional */
-        .profesional {
-            padding: 120px 6%;
-            background: var(--color-cream);
-        }
-
-        .profesional-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .profesional-image-container {
-            flex: 1;
-        }
-
-        .profesional-image {
-            width: 320px;
-            height: 320px;
-            border-radius: 50%;
-            object-fit: cover;
-            filter: grayscale(100%);
-            border: 8px solid white;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            margin: 0 auto;
-            display: block;
-        }
-
-        .profesional-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .profesional h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-text);
-        }
-
-        .profesional-title {
-            font-size: 0.75rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--color-earth);
-            font-weight: 700;
-        }
-
-        .profesional p {
-            font-size: 0.875rem;
-            color: #666;
-            line-height: 1.8;
-        }
-
-        /* Reserva */
-        .reserva {
-            padding: 120px 6%;
-            background: var(--color-text);
-            color: white;
-        }
-
-        .reserva-container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        .reserva h2 {
-            text-align: center;
-            font-size: 0.875rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 80px;
-        }
-
-        .reserva-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: start;
-        }
-
-        .reserva-card {
-            background: rgba(255,255,255,0.05);
-            padding: 60px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        .reserva-card h3 {
-            font-size: 1.75rem;
-            font-style: italic;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .reserva-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-earth);
-        }
-
-        .reserva-details {
-            font-size: 0.75rem;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            opacity: 0.7;
-            letter-spacing: 0.05em;
-        }
-
-        .reserva-detail-item {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .btn-whatsapp {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: var(--color-earth);
-            color: white;
-            text-align: center;
-            border-radius: 50px;
-            font-size: 0.65rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-whatsapp:hover {
-            background: #6a5a3f;
-        }
-
-        .reserva-protocol {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            padding: 24px;
-        }
-
-        .reserva-protocol h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .protocol-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .protocol-step {
-            display: flex;
-            gap: 16px;
-        }
-
-        .protocol-number {
-            color: var(--color-earth);
-            font-weight: 700;
-            font-size: 1.125rem;
-        }
-
-        .protocol-text {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            line-height: 1.8;
-        }
+        .profesional { padding: 120px 6%; background: var(--color-cream); }
+        .profesional-container { max-width: 1100px; margin: 0 auto; display: flex; gap: 80px; align-items: center; }
+        .profesional-image { width: 320px; height: 320px; border-radius: 50%; object-fit: cover; filter: grayscale(100%); border: 8px solid white; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .profesional-content { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+        .profesional h2 { font-size: 2rem; font-weight: 700; color: var(--color-text); }
+        .profesional-title { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-earth); font-weight: 700; }
+        .profesional p { font-size: 0.875rem; color: #666; line-height: 1.8; }
 
         /* Footer */
-        footer {
-            padding: 60px 6%;
-            background: white;
-            border-top: 1px solid var(--color-border);
-            text-align: center;
-        }
+        footer { padding: 80px 6%; background: white; border-top: 1px solid var(--color-border); }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+        .social-links { display: flex; gap: 30px; }
+        .social-icon { width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; color: var(--color-text); text-decoration: none; transition: all 0.3s; font-size: 1.2rem; }
+        .social-icon:hover { background: var(--color-earth); color: white; border-color: var(--color-earth); }
+        .copyright { font-size: 0.6rem; color: #ccc; letter-spacing: 0.4em; text-transform: uppercase; }
 
-        footer p {
-            font-size: 0.6rem;
-            color: #ccc;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-        }
-
-        /* Mobile Menu */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .menu-toggle span {
-            width: 25px;
-            height: 2px;
-            background: var(--color-text);
-            transition: all 0.3s;
-        }
-
-        /* Icons */
-        .icon {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-        }
-
-        /* Responsive */
+        /* Mobile */
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-toggle span { width: 25px; height: 2px; background: var(--color-text); transition: all 0.3s; }
         @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                height: 100vh;
-                width: 80%;
-                background: white;
-                flex-direction: column;
-                padding: 100px 40px;
-                box-shadow: -5px 0 20px rgba(0,0,0,0.1);
-                transition: right 0.3s ease;
-            }
-
-            .nav-links.active {
-                right: 0;
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            .ritual-container,
-            .profesional-container,
-            .reserva-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .ritual-badge {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 3rem;
-            }
+            .nav-links { position: fixed; top: 0; right: -100%; height: 100vh; width: 80%; background: white; flex-direction: column; padding: 100px 40px; box-shadow: -5px 0 20px rgba(0,0,0,0.1); transition: right 0.3s ease; }
+            .nav-links.active { right: 0; }
+            .menu-toggle { display: flex; }
+            .profesional-container { flex-direction: column; text-align: center; }
+            .profesional-image { margin: 0 auto; }
         }
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">
+            <a href="#" class="logo">
                 <div class="logo-circle"></div>
                 <span class="logo-text">Bell Studio</span>
-            </div>
+            </a>
             
             <div class="menu-toggle" onclick="toggleMenu()">
                 <span></span>
@@ -570,9 +103,9 @@
 
             <ul class="nav-links" id="navLinks">
                 <li><a href="#inicio" onclick="closeMenu()">Inicio</a></li>
-                <li><a href="#ritual" onclick="closeMenu()">El Ritual</a></li>
+                <li><a href="#servicios" onclick="closeMenu()">Servicios</a></li>
                 <li><a href="#profesional" onclick="closeMenu()">Perfil</a></li>
-                <li><a href="#reservar" class="btn-reservar" onclick="closeMenu()">Reservar</a></li>
+                <li><a href="turnero.html" class="btn-reservar">Reservar</a></li>
             </ul>
         </nav>
     </header>
@@ -581,57 +114,72 @@
         <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecee?auto=format&fit=crop&w=1920&q=80" alt="Espacio de Bell Studio en San Telmo" class="hero-image">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Pausa Consciente.</h1>
-            <p>90 minutos de integración corporal en el corazón de San Telmo.</p>
-            <a href="#reservar" class="btn-hero">Agendar Sesión</a>
+            <h1>Bienestar Estructural.</h1>
+            <p>Sesiones de masajes terapéuticos y entrenamiento personalizado en San Telmo.</p>
+            <a href="turnero.html" class="btn-hero">Agendar Turno</a>
         </div>
     </section>
 
-    <section id="ritual" class="ritual">
-        <div class="ritual-container">
-            <div class="ritual-content">
+    <section id="servicios" class="services-section">
+        <div class="services-header">
+            <span class="section-label">Nuestra Propuesta</span>
+            <h2>Sesiones y Tratamientos</h2>
+            <p>Un enfoque técnico para liberar patrones de tensión y recuperar la funcionalidad del movimiento.</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
                 <div>
-                    <span class="section-label">Estructura de la Sesión</span>
-                    <h2>Ritual Integral</h2>
+                    <h3 class="service-title">Sesión Express</h3>
+                    <p class="service-desc">Masaje focalizado en una zona específica (espalda alta o piernas) para aliviar contracturas agudas y retomar la actividad.</p>
                 </div>
-                <p class="ritual-description">
-                    En <strong>Bell Studio</strong>, la sesión es un proceso de automatización inversa: liberamos los patrones rígidos del cuerpo para recuperar la fluidez natural.
-                </p>
-                <div class="phases">
-                    <div class="phase">
-                        <svg class="phase-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
-                        </svg>
-                        <div class="phase-content">
-                            <h4>Fase 1: Descompresión</h4>
-                            <p>Aromaterapia y contacto inicial para bajar el ritmo del sistema nervioso.</p>
-                        </div>
-                    </div>
-                    <div class="phase">
-                        <svg class="phase-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <div class="phase-content">
-                            <h4>Fase 2: Liberación</h4>
-                            <p>Técnicas descontracturantes localizadas en zonas de carga crítica.</p>
-                        </div>
-                    </div>
-                    <div class="phase">
-                        <svg class="phase-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
-                        </svg>
-                        <div class="phase-content">
-                            <h4>Fase 3: Expansión</h4>
-                            <p>Estiramientos asistidos para devolver la amplitud al movimiento.</p>
-                        </div>
-                    </div>
+                <div class="service-meta">
+                    <span class="service-time">60 Minutos</span>
+                    <span class="service-price">$45.000</span>
                 </div>
             </div>
-            <div class="ritual-image-container">
-                <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80" alt="Masaje Terapéutico Bell Studio" class="ritual-image">
-                <div class="ritual-badge">
-                    <p class="ritual-badge-time">90'</p>
-                    <p class="ritual-badge-label">Full Experience</p>
+
+            <div class="service-card" style="border: 1px solid var(--color-earth);">
+                <div>
+                    <h3 class="service-title">Sesión Integral</h3>
+                    <p class="service-desc">El estándar de la casa. Combinación de técnicas descontracturantes profundas, estiramientos asistidos y aromaterapia.</p>
+                </div>
+                <div class="service-meta">
+                    <span class="service-time">90 Minutos</span>
+                    <span class="service-price">$70.000</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div>
+                    <h3 class="service-title">Inmersión Total</h3>
+                    <p class="service-desc">Dos horas dedicadas a trabajar el cuerpo completo con detalle minucioso. Ideal para deportistas o estados de estrés elevado.</p>
+                </div>
+                <div class="service-meta">
+                    <span class="service-time">120 Minutos</span>
+                    <span class="service-price">$90.000</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div>
+                    <h3 class="service-title">Masaje a 4 Manos</h3>
+                    <p class="service-desc">Doble sincronización. Dos terapeutas trabajando en espejo para sobrecargar los sentidos y forzar la desconexión mental.</p>
+                </div>
+                <div class="service-meta">
+                    <span class="service-time">60 Minutos</span>
+                    <span class="service-price">$100.000</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div>
+                    <h3 class="service-title">Entrenamiento Personalizado</h3>
+                    <p class="service-desc">Clases 1 a 1 enfocadas en movilidad, fuerza funcional y prevención de lesiones. Planificado según tu biomecánica.</p>
+                </div>
+                <div class="service-meta">
+                    <span class="service-time">60 Minutos</span>
+                    <span class="service-price">Consultar</span>
                 </div>
             </div>
         </div>
@@ -644,85 +192,33 @@
             </div>
             <div class="profesional-content">
                 <h2>Marcelo Bellizia</h2>
-                <p class="profesional-title">Profesor de Educación Física de Bell Studio</p>
-                <p>Analista de Datos de profesión, terapeuta por vocación. Mi enfoque en Bell Studio combina la precisión de la estructura con la sensibilidad de la calma.</p>
-                <p>Desde febrero de 2026, mi estudio en San Telmo es el punto de encuentro para quienes buscan un bienestar real, técnico y humano.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="reservar" class="reserva">
-        <div class="reserva-container">
-            <h2>Reservas Febrero 2026</h2>
-            
-            <div class="reserva-grid">
-                <div class="reserva-card">
-                    <h3>Ritual 90 Minutos</h3>
-                    <div class="reserva-price">$70.000</div>
-                    <div class="reserva-details">
-                        <div class="reserva-detail-item">
-                            <span>Seña confirmatoria:</span>
-                            <span>$35.000</span>
-                        </div>
-                        <div class="reserva-detail-item">
-                            <span>Medio de pago:</span>
-                            <span>MP / Transferencia</span>
-                        </div>
-                        <div class="reserva-detail-item">
-                            <span>Zona:</span>
-                            <span>San Telmo, CABA</span>
-                        </div>
-                    </div>
-                    <a href="turnero.html" class="btn-whatsapp">Reservar Turno Online</a>
-                </div>
-                <div class="reserva-protocol">
-                    <h3>Protocolo de Reserva</h3>
-                    <div class="protocol-steps">
-                        <div class="protocol-step">
-                            <span class="protocol-number">01.</span>
-                            <p class="protocol-text">Seleccioná tu día y horario preferido en nuestro sistema de turnos online.</p>
-                        </div>
-                        <div class="protocol-step">
-                            <span class="protocol-number">02.</span>
-                            <p class="protocol-text">Realizá la seña del 50%. Tenés un margen de 6 horas para enviar el comprobante y bloquear el horario.</p>
-                        </div>
-                        <div class="protocol-step">
-                            <span class="protocol-number">03.</span>
-                            <p class="protocol-text">Recibí la ubicación exacta de nuestro estudio boutique y preparate para tu pausa.</p>
-                        </div>
-                    </div>
-                </div>
+                <p class="profesional-title">Director & Terapeuta</p>
+                <p>Analista de Datos de profesión, terapeuta y entrenador por vocación. Mi enfoque en Bell Studio combina la precisión analítica con la sensibilidad manual.</p>
+                <p>Entiendo el cuerpo como un sistema de datos biomecánicos: detecto el error (tensión), depuro el sistema (masaje) y optimizo el funcionamiento (movimiento).</p>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>Bell Studio © 2026 — San Telmo, Buenos Aires</p>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://instagram.com/tu_usuario" target="_blank" class="social-icon" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://wa.me/5491112345678" target="_blank" class="social-icon" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://linkedin.com/in/tu_usuario" target="_blank" class="social-icon" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+            <p class="copyright">Bell Studio © 2026 — San Telmo, Buenos Aires</p>
+        </div>
     </footer>
 
     <script>
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
-        }
-
-        function closeMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.remove('active');
-        }
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Close menu on outside click
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+        function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
         document.addEventListener('click', (e) => {
             const navLinks = document.getElementById('navLinks');
             const menuToggle = document.querySelector('.menu-toggle');
