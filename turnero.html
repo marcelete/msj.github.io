@@ -129,7 +129,7 @@
         <div id="bookingView">
             <div class="page-title">
                 <h1>Reservar Turno</h1>
-                <p>Tu bienestar comienza agendando tu sesión</p>
+                <p>Tu bienestar comienza agendando tu momento</p>
             </div>
 
             <div class="booking-steps">
@@ -141,10 +141,10 @@
             <div style="margin-bottom: 30px; background: white; padding: 20px; border-radius: 10px; border: 1px solid var(--color-border);">
                 <label style="font-weight: 600; display: block; margin-bottom: 10px;">Seleccioná el Servicio:</label>
                 <select id="serviceSelect" onchange="updateTotal()" style="width: 100%; padding: 12px; border: 1px solid var(--color-border); border-radius: 5px;">
-                    <option value="sesion90" data-price="70000" data-name="Sesión Integral (90 min)">Sesión Integral (90 min) - $70.000</option>
-                    <option value="sesion60" data-price="45000" data-name="Sesión Express (60 min)">Sesión Express (60 min) - $45.000</option>
-                    <option value="sesion120" data-price="90000" data-name="Inmersión Total (120 min)">Inmersión Total (120 min) - $90.000</option>
-                    <option value="4manos" data-price="100000" data-name="Masaje a 4 Manos">Masaje a 4 Manos - $100.000</option>
+                    <option value="sesion90" data-price="70000" data-name="Sesión Integral (90 min)">Masaje Integral (90 min) - $70.000</option>
+                    <option value="sesion60" data-price="45000" data-name="Sesión Express (60 min)">Masaje Express (60 min) - $45.000</option>
+                    <option value="sesion120" data-price="90000" data-name="Inmersión Total (120 min)">Masaje Total (120 min) - $90.000</option>
+                    <option value="4manos" data-price="100000" data-name="Masaje a 4 Manos">Masaje a 4 Manos (2 masajistas) - $100.000</option>
                     <option value="entrenamiento" data-price="25000" data-name="Clase Personalizada">Clase Personalizada - $25.000</option>
                 </select>
             </div>
@@ -181,11 +181,11 @@
                         <div class="form-group full-width">
                             <label>¿Ya nos conocemos?</label>
                             <select id="firstTime">
-                                <option value="si">Es mi primera vez (incluye anamnesis)</option>
+                                <option value="si">Es mi primera vez</option>
                                 <option value="no">No, ya conozco el estudio</option>
                             </select>
                         </div>
-                        <div class="form-group full-width"><label>Comentarios / Lesiones</label><textarea id="comments"></textarea></div>
+                        <div class="form-group full-width"><label> Contame de vos. ¿Qué querés que te ayude a mejorar?</label><textarea id="comments"></textarea></div>
                     </div>
 
                     <div class="summary-box">
@@ -463,4 +463,5 @@
     </script>
 </body>
 </html>
+
 
