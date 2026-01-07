@@ -21,13 +21,8 @@
             --color-warning-text: #856404;
         }
         
-        /* Aplicación estricta de fuentes */
         body { font-family: 'Inter', sans-serif; background-color: var(--color-cream); color: var(--color-text); line-height: 1.6; }
-        
-        /* Títulos en Playfair Display */
         h1, h2, h3, .logo-text, .calendar-month { font-family: 'Playfair Display', serif; }
-        
-        /* Asegurar que inputs y botones hereden la fuente Inter */
         input, select, textarea, button { font-family: 'Inter', sans-serif; }
 
         /* Header */
@@ -36,35 +31,24 @@
         .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--color-text); }
         .logo-circle { width: 8px; height: 8px; border-radius: 50%; background: var(--color-earth); }
         .logo-text { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-        .back-link { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-earth); text-decoration: none; font-weight: 600; }
+        .back-link { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-earth); text-decoration: none; font-weight: 600; display:flex; align-items: center; gap: 10px;}
+
+        .lang-select { border: 1px solid var(--color-border); background: white; padding: 5px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; margin-left: 15px; }
 
         .container { max-width: 1000px; margin: 40px auto; padding: 0 6%; min-height: 80vh; }
         .page-title { text-align: center; margin-bottom: 40px; }
         .page-title h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 10px; color: var(--color-earth); }
 
-        /* --- CORRECCIÓN DE SIMETRÍA EN PASOS --- */
         .booking-steps { 
             display: grid; 
-            grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
-            max-width: 500px; /* Ancho máximo para que no se separen demasiado */
-            margin: 0 auto 50px; /* Centrado en la página */
+            grid-template-columns: repeat(3, 1fr); 
+            max-width: 500px; 
+            margin: 0 auto 50px; 
             position: relative;
         }
-        /* Línea conectora decorativa detrás de los círculos (opcional, da elegancia) */
-        //.booking-steps::before {
-        //    content: ''; position: absolute; top: 20px; left: 16%; right: 16%; 
-        //    height: 1px; background: #e0e0e0; z-index: 0;
-        }
-
         .step { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 12px; 
-            opacity: 0.4; 
-            transition: opacity 0.3s; 
-            position: relative; 
-            z-index: 1; /* Para estar sobre la línea */
+            display: flex; flex-direction: column; align-items: center; gap: 12px; 
+            opacity: 0.4; transition: opacity 0.3s; position: relative; z-index: 1; 
         }
         .step.active { opacity: 1; }
         .step-number { 
@@ -76,7 +60,6 @@
         .step.active .step-number { background: var(--color-earth); color: white; }
         .step-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
 
-        /* Grid Layouts */
         .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
         .section-card { background: white; padding: 30px; border-radius: 10px; border: 1px solid var(--color-border); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
         
@@ -92,7 +75,6 @@
         .calendar-day.selected { background: var(--color-earth); color: white; }
         .calendar-day.disabled { opacity: 0.3; cursor: not-allowed; }
         
-        /* Time Slots */
         .time-slots { display: grid; gap: 10px; }
         .time-slot { padding: 12px; border: 1px solid var(--color-border); border-radius: 5px; text-align: center; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
         .time-slot:hover:not(.disabled) { border-color: var(--color-earth); color: var(--color-earth); }
@@ -109,7 +91,11 @@
         .form-group input, .form-group select, .form-group textarea { padding: 12px; border: 1px solid var(--color-border); border-radius: 5px; width: 100%; transition: 0.3s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--color-earth); outline: none; }
         
-        /* Summary & Button */
+        /* Checkbox Policy */
+        .policy-group { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; background: #fafafa; padding: 15px; border-radius: 5px; }
+        .policy-group input[type="checkbox"] { width: auto; margin-top: 4px; }
+        .policy-text { font-size: 0.8rem; color: #555; line-height: 1.4; }
+
         .summary-box { background: var(--color-cream); padding: 25px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #f0f0f0; }
         .summary-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .summary-total { display: flex; justify-content: space-between; font-weight: 700; color: var(--color-earth); font-size: 1.1rem; margin-top: 15px; border-top: 2px solid #ddd; padding-top: 15px; }
@@ -118,7 +104,7 @@
         .btn-primary:hover { background: #5e5037; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(122, 105, 74, 0.2); }
         .btn-primary:disabled { opacity: 0.7; cursor: wait; }
 
-        /* --- PANTALLA DE ÉXITO (CONFIRMACIÓN) --- */
+        /* Confirmación */
         .confirmation-view { display: none; text-align: center; animation: fadeIn 0.5s ease; }
         .confirmation-view.active { display: block; }
         .success-card { background: white; padding: 40px; border-radius: 15px; border: 1px solid var(--color-border); max-width: 600px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
@@ -133,23 +119,23 @@
         .btn-copy { background: white; border: 1px solid var(--color-border); padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; transition: all 0.2s; }
         .btn-copy:hover { border-color: var(--color-earth); color: var(--color-earth); }
         
-        /* ESTILOS AVISO SPAM */
         .spam-warning { 
             background-color: var(--color-warning-bg); 
             color: var(--color-warning-text); 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin: 20px 0; 
-            text-align: left; 
-            font-size: 0.9rem; 
-            border: 1px solid #ffeeba;
-            display: flex;
-            gap: 10px;
-            align-items: start;
+            padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left; font-size: 0.9rem; border: 1px solid #ffeeba;
+            display: flex; gap: 10px; align-items: start;
         }
         
         .whatsapp-btn { background: var(--color-whatsapp); color: white; text-decoration: none; padding: 15px 30px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; margin-top: 20px; transition: all 0.3s; }
         .whatsapp-btn:hover { background: #1ebe57; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3); }
+
+        /* CALENDAR ACTION BUTTONS */
+        .calendar-actions { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+        .btn-calendar {
+            background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 5px;
+            font-size: 0.8rem; text-decoration: none; color: #555; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+        }
+        .btn-calendar:hover { border-color: var(--color-earth); color: var(--color-earth); }
 
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; display: none; }
         .loading-overlay.active { display: flex; }
@@ -163,8 +149,6 @@
             .container { margin: 20px auto; padding: 0 4%; } 
             .booking-steps { max-width: 100%; gap: 10px; }
             .step-label { font-size: 0.6rem; }
-            .booking-steps::before { top: 15px; } 
-            .step-number { width: 30px; height: 30px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -175,40 +159,48 @@
                 <div class="logo-circle"></div>
                 <span class="logo-text">Bell Studio</span>
             </a>
-            <a href="index.html" class="back-link">← Volver al inicio</a>
+            <div style="display: flex; align-items: center;">
+                <a href="index.html" class="back-link" data-i18n="back">← Volver</a>
+                <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
+                    <option value="es">ES</option>
+                    <option value="en">EN</option>
+                    <option value="pt">PT</option>
+                    <option value="it">IT</option>
+                </select>
+            </div>
         </div>
     </header>
 
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <p>Procesando reserva...</p>
+        <p data-i18n="processing">Procesando reserva...</p>
     </div>
 
     <div class="container">
         
         <div id="bookingView">
             <div class="page-title">
-                <h1>Reservar Turno</h1>
-                <p>Tu bienestar comienza agendando tu momento</p>
+                <h1 data-i18n="title">Reservar Turno</h1>
+                <p data-i18n="subtitle">Tu bienestar comienza agendando tu momento</p>
             </div>
 
             <div class="booking-steps">
                 <div class="step active" id="step1">
                     <div class="step-number">1</div>
-                    <div class="step-label">Fecha</div>
+                    <div class="step-label" data-i18n="step1">Fecha</div>
                 </div>
                 <div class="step" id="step2">
                     <div class="step-number">2</div>
-                    <div class="step-label">Horario</div>
+                    <div class="step-label" data-i18n="step2">Horario</div>
                 </div>
                 <div class="step" id="step3">
                     <div class="step-number">3</div>
-                    <div class="step-label">Confirmar</div>
+                    <div class="step-label" data-i18n="step3">Confirmar</div>
                 </div>
             </div>
 
             <div style="margin-bottom: 30px; background: white; padding: 20px; border-radius: 10px; border: 1px solid var(--color-border); box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-                <label style="font-weight: 600; display: block; margin-bottom: 10px; font-family: 'Playfair Display', serif; font-size: 1.1rem;">Seleccioná el Servicio:</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 10px; font-family: 'Playfair Display', serif; font-size: 1.1rem;" data-i18n="selectService">Seleccioná el Servicio:</label>
                 <select id="serviceSelect" onchange="updateTotal()" style="width: 100%; padding: 12px; border: 1px solid var(--color-border); border-radius: 5px;">
                     <option value="sesion90" data-price="70000" data-name="Sesión Integral (90 min)">Masaje Integral (90 min) - $70.000</option>
                     <option value="sesion60" data-price="45000" data-name="Sesión Express (60 min)">Masaje Express (60 min) - $45.000</option>
@@ -220,7 +212,7 @@
 
             <div class="booking-grid">
                 <div class="section-card">
-                    <h3 style="margin-bottom: 15px;">1. Seleccionar Fecha</h3>
+                    <h3 style="margin-bottom: 15px;" data-i18n="step1Header">1. Seleccionar Fecha</h3>
                     <div class="calendar-header">
                         <div class="calendar-month" id="calendarMonth"></div>
                         <div class="calendar-nav">
@@ -232,42 +224,50 @@
                 </div>
 
                 <div class="section-card">
-                    <h3 style="margin-bottom: 15px;">2. Seleccionar Horario</h3>
+                    <h3 style="margin-bottom: 15px;" data-i18n="step2Header">2. Seleccionar Horario</h3>
                     <div class="time-slots" id="timeSlots">
-                        <div style="text-align: center; color: #999; padding: 20px;">Primero seleccioná una fecha</div>
+                        <div style="text-align: center; color: #999; padding: 20px;" data-i18n="selectDateFirst">Primero seleccioná una fecha</div>
                     </div>
                 </div>
             </div>
 
             <div class="form-section" id="formSection">
-                <h3 style="margin-bottom: 20px;">3. Completar Datos</h3>
+                <h3 style="margin-bottom: 20px;" data-i18n="step3Header">3. Completar Datos</h3>
                 <form id="bookingForm">
                     <div class="form-grid">
-                        <div class="form-group"><label>Nombre</label><input type="text" id="firstName" required></div>
-                        <div class="form-group"><label>Apellido</label><input type="text" id="lastName" required></div>
-                        <div class="form-group"><label>Email</label><input type="email" id="email" required></div>
-                        <div class="form-group"><label>Teléfono (WhatsApp)</label><input type="tel" id="phone" placeholder="+54 9..." required></div>
+                        <div class="form-group"><label data-i18n="form.name">Nombre</label><input type="text" id="firstName" required></div>
+                        <div class="form-group"><label data-i18n="form.lastname">Apellido</label><input type="text" id="lastName" required></div>
+                        <div class="form-group"><label data-i18n="form.email">Email</label><input type="email" id="email" required></div>
+                        <div class="form-group"><label data-i18n="form.phone">Teléfono (WhatsApp)</label><input type="tel" id="phone" placeholder="+54 9..." required></div>
                         <div class="form-group full-width">
-                            <label>¿Ya nos conocemos?</label>
+                            <label data-i18n="form.known">¿Ya nos conocemos?</label>
                             <select id="firstTime">
-                                <option value="si">Es mi primera vez</option>
-                                <option value="no">No, ya conozco el estudio</option>
+                                <option value="si" data-i18n="form.firstTime">Es mi primera vez</option>
+                                <option value="no" data-i18n="form.regular">No, ya conozco el estudio</option>
                             </select>
                         </div>
-                        <div class="form-group full-width"><label> Contame de vos. ¿Qué querés que te ayude a mejorar?</label><textarea id="comments" rows="3"></textarea></div>
+                        <div class="form-group full-width"><label data-i18n="form.comments">Contame de vos. ¿Qué querés mejorar?</label><textarea id="comments" rows="3"></textarea></div>
+                        
+                        <!-- POLICY CHECKBOX -->
+                        <div class="policy-group">
+                            <input type="checkbox" id="policyCheck" required>
+                            <label for="policyCheck" class="policy-text" data-i18n="policy">
+                                Entiendo y acepto que el turno comienza puntualmente. En caso de ausencia o demora mayor a 15 minutos, el turno se perderá y la seña <strong>no será reembolsable</strong>.
+                            </label>
+                        </div>
                     </div>
 
                     <div class="summary-box">
-                        <div class="summary-item"><span style="color: #666;">Servicio:</span><strong id="summaryService">-</strong></div>
-                        <div class="summary-item"><span style="color: #666;">Fecha y Hora:</span><strong id="summaryDateTime">-</strong></div>
+                        <div class="summary-item"><span style="color: #666;" data-i18n="summary.service">Servicio:</span><strong id="summaryService">-</strong></div>
+                        <div class="summary-item"><span style="color: #666;" data-i18n="summary.date">Fecha y Hora:</span><strong id="summaryDateTime">-</strong></div>
                         <div class="summary-total">
-                            <span>Seña a transferir (50%):</span>
+                            <span data-i18n="summary.deposit">Seña a transferir (50%):</span>
                             <span id="summaryTotal">$0</span>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary" id="submitBtn">Confirmar Reserva</button>
-                    <p style="text-align: center; font-size: 0.8rem; color: #777; margin-top: 10px;">
+                    <button type="submit" class="btn-primary" id="submitBtn" data-i18n="btn.confirm">Confirmar Reserva</button>
+                    <p style="text-align: center; font-size: 0.8rem; color: #777; margin-top: 10px;" data-i18n="btn.disclaimer">
                         Al confirmar, recibirás los datos para transferir la seña.
                     </p>
                 </form>
@@ -277,20 +277,20 @@
         <div class="confirmation-view" id="confirmationView">
             <div class="success-card">
                 <div class="icon-circle"><i class="fas fa-check"></i></div>
-                <h2 style="margin-bottom: 10px;">¡Reserva Registrada!</h2>
-                <p style="color: #666;">Tu turno ha sido pre-reservado. Para confirmarlo definitivamente, por favor realizá la transferencia de la seña.</p>
+                <h2 style="margin-bottom: 10px;" data-i18n="success.title">¡Reserva Registrada!</h2>
+                <p style="color: #666;" data-i18n="success.subtitle">Tu turno ha sido pre-reservado. Para confirmarlo definitivamente, por favor realizá la transferencia de la seña.</p>
 
                 <div class="spam-warning">
                     <i class="fas fa-exclamation-circle" style="margin-top: 2px;"></i>
-                    <div>
-                        <strong>Importante:</strong> Revisá tu casilla de <b>Spam</b> o <b>Correo No Deseado</b> para encontrar el mail con los detalles de la reserva.
+                    <div data-i18n="success.spam">
+                        <strong>Importante:</strong> Revisá tu casilla de <b>Spam</b> para encontrar el mail con los detalles.
                     </div>
                 </div>
 
                 <div class="alias-container">
                     <div class="alias-row">
                         <div>
-                            <span class="alias-label">Alias Mercado Pago</span>
+                            <span class="alias-label" data-i18n="success.alias">Alias Mercado Pago</span>
                             <span class="alias-value" id="aliasText">bell.studio</span>
                         </div>
                         <button class="btn-copy" onclick="copyAlias()">
@@ -298,25 +298,33 @@
                         </button>
                     </div>
                     <div style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
-                        <span class="alias-label">Monto a Transferir</span>
+                        <span class="alias-label" data-i18n="success.amount">Monto a Transferir</span>
                         <span class="alias-value" style="color: var(--color-earth);" id="confirmAmount">$0</span>
                     </div>
                 </div>
 
+                <!-- ADD TO CALENDAR -->
+                <div style="margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
+                    <p style="font-size: 0.9rem; margin-bottom: 10px; font-weight: 600;" data-i18n="calendar.label">Agendalo para no olvidarte:</p>
+                    <div class="calendar-actions" id="calendarActions">
+                        <!-- Links generated by JS -->
+                    </div>
+                </div>
+
                 <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; font-size: 0.9rem; color: #555; text-align: left;">
-                    <p><strong>Pasos finales:</strong></p>
+                    <p><strong data-i18n="final.steps">Pasos finales:</strong></p>
                     <ol style="margin-left: 20px; margin-top: 5px;">
-                        <li>Transferí el monto indicado al alias.</li>
-                        <li>Enviame el comprobante por WhatsApp.</li>
-                        <li>¡Listo! Tu turno queda asegurado.</li>
+                        <li data-i18n="final.step1">Transferí el monto indicado al alias.</li>
+                        <li data-i18n="final.step2">Enviame el comprobante por WhatsApp.</li>
+                        <li data-i18n="final.step3">¡Listo! Tu turno queda asegurado.</li>
                     </ol>
                 </div>
 
                 <a href="#" id="waLink" target="_blank" class="whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> Enviar Comprobante
+                    <i class="fab fa-whatsapp"></i> <span data-i18n="btn.whatsapp">Enviar Comprobante</span>
                 </a>
                 
-                <a href="index.html" style="display: block; margin-top: 20px; color: #999; text-decoration: none; font-size: 0.85rem;">Volver al inicio</a>
+                <a href="index.html" style="display: block; margin-top: 20px; color: #999; text-decoration: none; font-size: 0.85rem;" data-i18n="btn.home">Volver al inicio</a>
             </div>
         </div>
 
@@ -326,42 +334,133 @@
         // === CONFIGURACIÓN ===
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwduTI9apkTEuufQsfEIyxGOX4zcO0EyYNXbhqHZsgz-2I1Fcjpj1bGlHiOaVaOxW4lHA/exec'
         const ALIAS_MP = "bell.studio";
-        const WA_NUMBER = "5491165118935"; // Tu número
+        const WA_NUMBER = "5491165118935"; 
 
-        // Variables de estado
+        // FERIADOS ARGENTINA 2026 (Hardcoded para evitar API calls)
+        const HOLIDAYS_2026 = [
+            "2026-01-01", // Año Nuevo
+            "2026-02-16", // Carnaval
+            "2026-02-17", // Carnaval
+            "2026-03-24", // Memoria
+            "2026-04-02", // Malvinas
+            "2026-05-01", // Trabajador
+            "2026-05-25", // Revolución
+            "2026-06-20", // Bandera
+            "2026-07-09", // Independencia
+            "2026-08-17", // San Martín
+            "2026-10-12", // Diversidad
+            "2026-11-20", // Soberanía
+            "2026-12-08", // Inmaculada
+            "2026-12-25"  // Navidad
+        ];
+
+        // Traducciones
+        const i18n = {
+            es: {
+                back: "← Volver", processing: "Procesando reserva...", title: "Reservar Turno", subtitle: "Tu bienestar comienza agendando tu momento",
+                step1: "Fecha", step2: "Horario", step3: "Confirmar", selectService: "Seleccioná el Servicio:",
+                step1Header: "1. Seleccionar Fecha", step2Header: "2. Seleccionar Horario", step3Header: "3. Completar Datos",
+                selectDateFirst: "Primero seleccioná una fecha", form: { name: "Nombre", lastname: "Apellido", email: "Email", phone: "Teléfono (WhatsApp)", known: "¿Ya nos conocemos?", firstTime: "Es mi primera vez", regular: "No, ya conozco el estudio", comments: "Contame de vos. ¿Qué querés mejorar?" },
+                policy: "Entiendo y acepto que el turno comienza puntualmente. En caso de ausencia o demora mayor a 15 minutos, el turno se perderá y la seña <strong>no será reembolsable</strong>.",
+                summary: { service: "Servicio:", date: "Fecha y Hora:", deposit: "Seña a transferir (50%):" },
+                btn: { confirm: "Confirmar Reserva", disclaimer: "Al confirmar, recibirás los datos para transferir la seña.", whatsapp: "Enviar Comprobante", home: "Volver al inicio" },
+                success: { title: "¡Reserva Registrada!", subtitle: "Tu turno ha sido pre-reservado. Para confirmarlo definitivamente, por favor realizá la transferencia de la seña.", spam: "<strong>Importante:</strong> Revisá tu casilla de <b>Spam</b> para encontrar el mail con los detalles.", alias: "Alias Mercado Pago", amount: "Monto a Transferir" },
+                calendar: { label: "Agendalo para no olvidarte:", google: "Google Calendar", apple: "Apple / Outlook" },
+                final: { steps: "Pasos finales:", step1: "Transferí el monto indicado al alias.", step2: "Enviame el comprobante por WhatsApp.", step3: "¡Listo! Tu turno queda asegurado." }
+            },
+            en: {
+                back: "← Back", processing: "Processing...", title: "Book Appointment", subtitle: "Your wellness starts here",
+                step1: "Date", step2: "Time", step3: "Confirm", selectService: "Select Service:",
+                step1Header: "1. Select Date", step2Header: "2. Select Time", step3Header: "3. Your Details",
+                selectDateFirst: "Select a date first", form: { name: "First Name", lastname: "Last Name", email: "Email", phone: "Phone (WhatsApp)", known: "Have we met?", firstTime: "It's my first time", regular: "No, I'm a regular", comments: "Tell me about you. What do you want to improve?" },
+                policy: "I understand and accept that the session starts on time. In case of absence or delay greater than 15 minutes, the appointment is lost and the deposit is <strong>non-refundable</strong>.",
+                summary: { service: "Service:", date: "Date & Time:", deposit: "Deposit to transfer (50%):" },
+                btn: { confirm: "Confirm Booking", disclaimer: "You will receive deposit details upon confirmation.", whatsapp: "Send Receipt", home: "Back to Home" },
+                success: { title: "Booking Registered!", subtitle: "Your spot is pre-reserved. To confirm it, please transfer the deposit.", spam: "<strong>Important:</strong> Check your <b>Spam</b> folder for the email details.", alias: "Mercado Pago Alias", amount: "Amount to Transfer" },
+                calendar: { label: "Add to calendar:", google: "Google Calendar", apple: "Apple / Outlook" },
+                final: { steps: "Final steps:", step1: "Transfer the amount to the alias.", step2: "Send me the receipt via WhatsApp.", step3: "Done! Your spot is secured." }
+            },
+            pt: {
+                back: "← Voltar", processing: "Processando...", title: "Reservar Horário", subtitle: "Seu bem-estar começa aqui",
+                step1: "Data", step2: "Horário", step3: "Confirmar", selectService: "Selecione o Serviço:",
+                step1Header: "1. Selecionar Data", step2Header: "2. Selecionar Horário", step3Header: "3. Seus Dados",
+                selectDateFirst: "Selecione uma data primeiro", form: { name: "Nome", lastname: "Sobrenome", email: "Email", phone: "Telefone (WhatsApp)", known: "Já nos conhecemos?", firstTime: "É minha primeira vez", regular: "Não, já conheço o estúdio", comments: "Conte-me sobre você. O que quer melhorar?" },
+                policy: "Entendo e aceito que o turno começa pontualmente. Em caso de ausência ou atraso superior a 15 minutos, o turno será perdido e o sinal <strong>não será reembolsável</strong>.",
+                summary: { service: "Serviço:", date: "Data e Hora:", deposit: "Sinal a transferir (50%):" },
+                btn: { confirm: "Confirmar Reserva", disclaimer: "Ao confirmar, você receberá os dados para transferência.", whatsapp: "Enviar Comprovante", home: "Voltar ao início" },
+                success: { title: "Reserva Registrada!", subtitle: "Seu turno foi pré-reservado. Para confirmar, transfira o sinal.", spam: "<strong>Importante:</strong> Verifique sua caixa de <b>Spam</b> para ver os detalhes.", alias: "Alias Mercado Pago", amount: "Valor a Transferir" },
+                calendar: { label: "Adicione à agenda:", google: "Google Calendar", apple: "Apple / Outlook" },
+                final: { steps: "Passos finais:", step1: "Transfira o valor indicado.", step2: "Envie o comprovante por WhatsApp.", step3: "Pronto! Seu turno está garantido." }
+            },
+            it: {
+                back: "← Indietro", processing: "Elaborazione...", title: "Prenota Appuntamento", subtitle: "Il tuo benessere inizia qui",
+                step1: "Data", step2: "Orario", step3: "Conferma", selectService: "Seleziona Servizio:",
+                step1Header: "1. Seleziona Data", step2Header: "2. Seleziona Orario", step3Header: "3. I Tuoi Dati",
+                selectDateFirst: "Seleziona prima una data", form: { name: "Nome", lastname: "Cognome", email: "Email", phone: "Telefono (WhatsApp)", known: "Ci conosciamo?", firstTime: "È la mia prima volta", regular: "No, conosco già lo studio", comments: "Parlami di te. Cosa vuoi migliorare?" },
+                policy: "Capisco e accetto che l'appuntamento inizia puntualmente. In caso di assenza o ritardo superiore a 15 minuti, l'appuntamento è perso e l'acconto <strong>non è rimborsabile</strong>.",
+                summary: { service: "Servizio:", date: "Data e Ora:", deposit: "Acconto da trasferire (50%):" },
+                btn: { confirm: "Conferma Prenotazione", disclaimer: "Riceverai i dettagli per l'acconto alla conferma.", whatsapp: "Invia Ricevuta", home: "Torna alla Home" },
+                success: { title: "Prenotazione Registrata!", subtitle: "Il tuo posto è pre-riservato. Per confermare, trasferisci l'acconto.", spam: "<strong>Importante:</strong> Controlla la cartella <b>Spam</b> per i dettagli.", alias: "Alias Mercado Pago", amount: "Importo da Trasferire" },
+                calendar: { label: "Aggiungi al calendario:", google: "Google Calendar", apple: "Apple / Outlook" },
+                final: { steps: "Passaggi finali:", step1: "Trasferisci l'importo indicato.", step2: "Inviami la ricevuta via WhatsApp.", step3: "Fatto! Il tuo posto è assicurato." }
+            }
+        };
+
+        let currentLang = 'es';
         let currentDate = new Date();
         let selectedDate = null;
         let selectedTime = null;
         let occupiedSlots = [];
 
-        // Inicialización
         async function init() {
             await fetchOccupiedSlots();
             renderCalendar();
             updateTotal();
         }
 
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Textos estáticos
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const keys = el.getAttribute('data-i18n').split('.');
+                let val = i18n[lang];
+                keys.forEach(k => val = val[k]);
+                if(val) el.innerHTML = val; // innerHTML para permitir negritas
+            });
+
+            // Re-render calendario para nombres de meses/dias
+            renderCalendar();
+            if(selectedDate) renderTimeSlots(selectedDate.dateObj.getDay());
+        }
+
         async function fetchOccupiedSlots() {
             try {
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const data = await response.json();
-                occupiedSlots = data;
-                console.log("Ocupados:", occupiedSlots);
+                occupiedSlots = data; 
             } catch (error) {
                 console.error("Error fetching slots:", error);
-                occupiedSlots = []; // Fallback
+                occupiedSlots = []; 
             }
         }
 
         function renderCalendar() {
             const calendar = document.getElementById('calendar');
             const monthLabel = document.getElementById('calendarMonth');
-            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
             
-            monthLabel.textContent = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            // Nombres localizados
+            const monthName = new Intl.DateTimeFormat(currentLang, { month: 'long' }).format(currentDate);
+            monthLabel.textContent = `${monthName} ${currentDate.getFullYear()}`;
+            
             calendar.innerHTML = '';
 
-            const daysHeader = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            const daysHeader = [];
+            for(let i=0; i<7; i++) {
+                // Truco para obtener dias de la semana localizados (domingo base)
+                const d = new Date(2023, 0, 1 + i); 
+                daysHeader.push(new Intl.DateTimeFormat(currentLang, { weekday: 'short' }).format(d));
+            }
             daysHeader.forEach(d => calendar.innerHTML += `<div class="calendar-day-header">${d}</div>`);
 
             const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
@@ -376,8 +475,12 @@
                 const dateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
                 const dayOfWeek = dateObj.getDay();
                 
-                // Días habilitados: Mar(2), Mié(3), Vie(5), Sáb(6)
-                const isWorkDay = [2, 3, 5, 6].includes(dayOfWeek);
+                // Formato YYYY-MM-DD para chequear feriados
+                const dateString = dateObj.toISOString().split('T')[0];
+                const isHoliday = HOLIDAYS_2026.includes(dateString);
+
+                // Días habilitados: Mar(2), Mié(3), Vie(5), Sáb(6). No feriados.
+                const isWorkDay = [2, 3, 5, 6].includes(dayOfWeek) && !isHoliday;
                 const isPast = dateObj < today;
 
                 const el = document.createElement('div');
@@ -402,13 +505,11 @@
         function selectDate(day, dateObj) {
             selectedDate = { day, month: currentDate.getMonth(), year: currentDate.getFullYear(), dateObj };
             selectedTime = null;
-            renderCalendar(); // Re-render selection
+            renderCalendar();
             renderTimeSlots(dateObj.getDay());
             
             document.getElementById('step1').classList.add('active');
             document.getElementById('step2').classList.add('active');
-            
-            // Reset form visibility if changing date
             document.getElementById('formSection').classList.remove('active');
         }
 
@@ -474,10 +575,56 @@
             });
         }
 
-        // --- MANEJO DEL SUBMIT (LÓGICA PRINCIPAL) ---
+        function generateCalendarLinks(serviceName, dateObj, timeStr) {
+            // Parsear hora inicio
+            const [startStr, endStr] = timeStr.split(' - ');
+            const [startH, startM] = startStr.split(':').map(Number);
+            const [endH, endM] = endStr.split(':').map(Number);
+
+            const start = new Date(dateObj);
+            start.setHours(startH, startM, 0);
+            const end = new Date(dateObj);
+            end.setHours(endH, endM, 0);
+
+            // Formato para Google: YYYYMMDDTHHMMSS
+            const fmt = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+            
+            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Bolivar y Belgrano, San Telmo')}`;
+            
+            // ICS Generation
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:${document.URL}
+DTSTART:${fmt(start)}
+DTEND:${fmt(end)}
+SUMMARY:Turno Bell Studio: ${serviceName}
+DESCRIPTION:Recordá la tolerancia de 15 min.
+LOCATION:Bolivar y Belgrano, San Telmo
+END:VEVENT
+END:VCALENDAR`;
+            
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const icsUrl = URL.createObjectURL(blob);
+
+            const container = document.getElementById('calendarActions');
+            container.innerHTML = `
+                <a href="${gUrl}" target="_blank" class="btn-calendar">
+                    <i class="fab fa-google"></i> ${i18n[currentLang].calendar.google}
+                </a>
+                <a href="${icsUrl}" download="turno-bellstudio.ics" class="btn-calendar">
+                    <i class="fab fa-apple"></i> ${i18n[currentLang].calendar.apple}
+                </a>
+            `;
+        }
+
+        // --- MANEJO DEL SUBMIT ---
         document.getElementById('bookingForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Checkbox Policy Validation (HTML5 'required' handles it visually, but extra check)
+            if(!document.getElementById('policyCheck').checked) return;
+
             // UI Loading
             document.getElementById('loadingOverlay').classList.add('active');
             const btn = document.getElementById('submitBtn');
@@ -501,7 +648,8 @@
                 comments: document.getElementById('comments').value,
                 date: dateStr,
                 time: startTime,
-                service: select.value
+                service: select.value,
+                lang: currentLang // Send lang to backend just in case
             };
 
             try {
@@ -516,6 +664,9 @@
                 // 2. Preparar Pantalla de Éxito
                 document.getElementById('confirmAmount').textContent = `$${depositStr}`;
                 
+                // Generar links calendario
+                generateCalendarLinks(serviceName, selectedDate.dateObj, selectedTime);
+
                 // 3. Generar Link de WhatsApp
                 const msg = `Hola, soy ${formData.firstName}. Te envío el comprobante de $${depositStr} para confirmar mi turno de ${serviceName} el día ${dateStr} a las ${selectedTime}.`;
                 const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
