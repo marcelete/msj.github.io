@@ -17,16 +17,15 @@
             --color-border: #E5E5E5;
         }
         
-        /* 1. CONFIGURACIÓN DE TIPOGRAFÍAS (MÁXIMO 2) */
         body { 
-            font-family: 'Inter', sans-serif; /* Tipografía para textos y descripciones */
+            font-family: 'Inter', sans-serif;
             background-color: var(--color-cream); 
             color: var(--color-text); 
             line-height: 1.6; 
             overflow-x: hidden; 
         }
         h1, h2, h3, .logo-text, .service-title { 
-            font-family: 'Playfair Display', serif; /* Tipografía para Títulos */
+            font-family: 'Playfair Display', serif; 
         }
         
         /* Header & Nav */
@@ -79,7 +78,7 @@
         .logo-text { 
             font-size: 1.2rem; 
             font-weight: 700; 
-            letter-spacing: 0.1em; /* Ajustado para Playfair */
+            letter-spacing: 0.1em; 
             color: var(--color-text);
             transition: color 0.3s ease;
         }
@@ -88,7 +87,7 @@
         }
         .nav-links { 
             display: flex; 
-            gap: 40px; 
+            gap: 30px; 
             list-style: none; 
             align-items: center; 
         }
@@ -96,12 +95,11 @@
             text-decoration: none; 
             color: var(--color-text); 
             font-size: 0.75rem; 
-            font-weight: 600; /* Inter SemiBold */
+            font-weight: 600; 
             letter-spacing: 0.15em; 
             text-transform: uppercase; 
             transition: color 0.3s;
             position: relative;
-            font-family: 'Inter', sans-serif;
         }
         .nav-links a:not(.btn-reservar)::after {
             content: '';
@@ -135,6 +133,20 @@
             background: var(--color-earth-dark); 
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(122, 105, 74, 0.4);
+        }
+
+        /* Language Selector */
+        .lang-select {
+            border: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text);
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-left: 10px;
+            outline: none;
         }
 
         /* Hero */
@@ -182,7 +194,7 @@
         }
         .hero p { 
             font-size: clamp(1rem, 2vw, 1.25rem); 
-            font-weight: 300; /* Inter Light */
+            font-weight: 300; 
             opacity: 0.95; 
             margin-bottom: 50px; 
             letter-spacing: 0.05em; 
@@ -202,7 +214,6 @@
             transition: all 0.3s ease; 
             animation: fadeInUp 1s ease 0.4s both;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-family: 'Inter', sans-serif;
         }
         .btn-hero:hover { 
             background: white; 
@@ -258,7 +269,6 @@
             font-size: 0.65rem; 
             display: block; 
             margin-bottom: 20px; 
-            font-family: 'Inter', sans-serif;
         }
         .services-header h2 { 
             font-size: clamp(2rem, 4vw, 3rem); 
@@ -336,7 +346,6 @@
             align-items: center; 
             border-top: 1px solid #ddd; 
             padding-top: 20px; 
-            font-family: 'Inter', sans-serif;
         }
         .service-price { 
             font-weight: 700; 
@@ -367,7 +376,6 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             transform: rotate(45deg);
-            font-family: 'Inter', sans-serif;
             font-weight: 600;
         }
 
@@ -419,7 +427,6 @@
             text-transform: uppercase; 
             color: var(--color-earth); 
             font-weight: 700; 
-            font-family: 'Inter', sans-serif;
         }
         .profesional p { 
             font-size: 0.875rem; 
@@ -465,7 +472,6 @@
             text-transform: uppercase;
             transition: all 0.3s ease;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            font-family: 'Inter', sans-serif;
         }
         
         .btn-cta:hover {
@@ -497,7 +503,6 @@
         }
 
         .footer-info p {
-            font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             color: #666;
             margin-bottom: 8px;
@@ -616,7 +621,7 @@
             transform: translateY(0);
         }
 
-        /* Stagger Animation for Cards */
+        /* Stagger Animation */
         .service-card:nth-child(1) { transition-delay: 0.1s; }
         .service-card:nth-child(2) { transition-delay: 0.2s; }
         .service-card:nth-child(3) { transition-delay: 0.3s; }
@@ -639,11 +644,19 @@
             </div>
 
             <ul class="nav-links" id="navLinks">
-                <li><a href="#inicio" onclick="closeMenu()">Inicio</a></li>
-                <li><a href="#servicios" onclick="closeMenu()">Servicios</a></li>
-                <li><a href="#profesional" onclick="closeMenu()">¿Quien soy?</a></li>
-                <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
-                <li><a href="turnero.html" class="btn-reservar">Reservar</a></li>
+                <li><a href="#inicio" onclick="closeMenu()" data-i18n="nav.home">Inicio</a></li>
+                <li><a href="#servicios" onclick="closeMenu()" data-i18n="nav.services">Servicios</a></li>
+                <li><a href="#profesional" onclick="closeMenu()" data-i18n="nav.about">¿Quien soy?</a></li>
+                <li><a href="#contacto" onclick="closeMenu()" data-i18n="nav.contact">Contacto</a></li>
+                <li>
+                    <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
+                        <option value="es">ES</option>
+                        <option value="en">EN</option>
+                        <option value="pt">PT</option>
+                        <option value="it">IT</option>
+                    </select>
+                </li>
+                <li><a href="turnero.html" class="btn-reservar" data-i18n="nav.book">Reservar</a></li>
             </ul>
         </nav>
     </header>
@@ -653,72 +666,72 @@
         
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Bienestar Estructural</h1>
-            <p>Entrenamiento personalizado y sesiones de masajes terapéuticos en San Telmo.</p>
-            <a href="turnero.html" class="btn-hero">Agendar Turno</a>
+            <h1 data-i18n="hero.title">Bienestar Estructural</h1>
+            <p data-i18n="hero.subtitle">Entrenamiento personalizado y sesiones de masajes terapéuticos en San Telmo.</p>
+            <a href="turnero.html" class="btn-hero" data-i18n="hero.cta">Agendar Turno</a>
         </div>
         <div class="scroll-indicator"></div>
     </section>
 
     <section id="servicios" class="services-section">
         <div class="services-header animate-on-scroll">
-            <span class="section-label">Nuestra Propuesta</span>
-            <h2>Sesiones y Tratamientos</h2>
-            <p>Un enfoque técnico para liberar patrones de tensión y recuperar la funcionalidad del movimiento.</p>
+            <span class="section-label" data-i18n="services.label">Nuestra Propuesta</span>
+            <h2 data-i18n="services.title">Sesiones y Tratamientos</h2>
+            <p data-i18n="services.subtitle">Un enfoque técnico para liberar patrones de tensión y recuperar la funcionalidad del movimiento.</p>
         </div>
         
         <div class="services-grid">
             <div class="service-card animate-on-scroll">
                 <div>
-                    <h3 class="service-title">Masaje Express</h3>
-                    <p class="service-desc">Masaje focalizado en una zona específica (espalda alta o piernas) para aliviar contracturas agudas y retomar la actividad.</p>
+                    <h3 class="service-title" data-i18n="services.express.title">Masaje Express</h3>
+                    <p class="service-desc" data-i18n="services.express.desc">Masaje focalizado en una zona específica (espalda alta o piernas) para aliviar contracturas agudas y retomar la actividad.</p>
                 </div>
                 <div class="service-meta">
-                    <span class="service-time">60 Minutos</span>
+                    <span class="service-time" data-i18n="time.60">60 Minutos</span>
                     <span class="service-price">$60.000</span>
                 </div>
             </div>
 
             <div class="service-card featured animate-on-scroll">
                 <div>
-                    <h3 class="service-title">Masaje Integral</h3>
-                    <p class="service-desc">El estándar de la casa. Combinación de técnicas descontracturantes profundas, estiramientos asistidos y aromaterapia.</p>
+                    <h3 class="service-title" data-i18n="services.integral.title">Masaje Integral</h3>
+                    <p class="service-desc" data-i18n="services.integral.desc">El estándar de la casa. Combinación de técnicas descontracturantes profundas, estiramientos asistidos y aromaterapia.</p>
                 </div>
                 <div class="service-meta">
-                    <span class="service-time">90 Minutos</span>
+                    <span class="service-time" data-i18n="time.90">90 Minutos</span>
                     <span class="service-price">$70.000</span>
                 </div>
             </div>
 
             <div class="service-card animate-on-scroll">
                 <div>
-                    <h3 class="service-title">Inmersión Total</h3>
-                    <p class="service-desc">Dos horas dedicadas a trabajar el cuerpo completo con detalle minucioso. Ideal para deportistas o estados de estrés elevado.</p>
+                    <h3 class="service-title" data-i18n="services.immersion.title">Inmersión Total</h3>
+                    <p class="service-desc" data-i18n="services.immersion.desc">Dos horas dedicadas a trabajar el cuerpo completo con detalle minucioso. Ideal para deportistas o estados de estrés elevado.</p>
                 </div>
                 <div class="service-meta">
-                    <span class="service-time">120 Minutos</span>
+                    <span class="service-time" data-i18n="time.120">120 Minutos</span>
                     <span class="service-price">$90.000</span>
                 </div>
             </div>
 
             <div class="service-card animate-on-scroll">
                 <div>
-                    <h3 class="service-title">Masaje a 4 Manos</h3>
-                    <p class="service-desc">Doble sincronización. Dos terapeutas trabajando en espejo para sobrecargar los sentidos y forzar la desconexión mental.</p>
+                    <h3 class="service-title" data-i18n="services.4hands.title">Masaje a 4 Manos</h3>
+                    <p class="service-desc" data-i18n="services.4hands.desc">Doble sincronización. Dos terapeutas trabajando en espejo para sobrecargar los sentidos y forzar la desconexión mental.</p>
                 </div>
                 <div class="service-meta">
-                    <span class="service-time">60 Minutos</span>
+                    <span class="service-time" data-i18n="time.60">60 Minutos</span>
                     <span class="service-price">$100.000</span>
                 </div>
             </div>
 
             <div class="service-card animate-on-scroll">
                 <div>
-                    <h3 class="service-title">Entrenamiento Personalizado</h3>
-                    <p class="service-desc">Clases 1 a 1 enfocadas en movilidad, fuerza funcional y prevención de lesiones. Planificado según tu biomecánica.</p>
+                    <h3 class="service-title" data-i18n="services.training.title">Entrenamiento Personalizado</h3>
+                    <p class="service-desc" data-i18n="services.training.desc">Clases 1 a 1 enfocadas en movilidad, fuerza funcional y prevención de lesiones. Planificado según tu biomecánica.</p>
                 </div>
                 <div class="service-meta">
-                    <span class="service-time">60 Minutos</span>
+                    <span class="service-time" data-i18n="time.60">60 Minutos</span>
                     <span class="service-price">$25.000</span>
                 </div>
             </div>
@@ -728,24 +741,25 @@
     <section id="profesional" class="profesional">
         <div class="profesional-container">
             <div class="profesional-image-container animate-on-scroll">
-                <img src="tu-foto-profesional.jpg" alt="Prof. Marcelo Bellizia" class="profesional-image">
+                <!-- RECORDATORIO: Reemplazar con la foto real del usuario -->
+                <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Prof. Marcelo Bellizia" class="profesional-image">
             </div>
             <div class="profesional-content animate-on-scroll">
-                <span class="profesional-title">Director & Terapeuta</span>
+                <span class="profesional-title" data-i18n="about.label">Director & Terapeuta</span>
                 <h2>Prof. Marcelo Bellizia</h2>
-                <p><strong>Profesor Superior de Educación Física y Masoterapeuta.</strong></p>
-                <p>Mi objetivo es brindarte alivio a corto y largo plazo de manera profesional comenzando con una anamnesis completa hasta mediciones de composición corporal y rangos de movimiento. Lo hago porque estoy convencido de que <strong>lo que no se mide no se puede mejorar</strong>; y si venís a verme, es porque buscás una mejora real, además de un rato de calma.</p>
-                <p>Comprendo desde mi propia experiencia los dolores propios del trabajo en oficina, el desgaste deportivo y la vida cotidiana.</p>
-                <p>Desde mi enfoque te ofrezco que vuelvas a encontrar tu equilibrio a través de clases de entrenamiento funcional y estiramiento, como también con técnicas de estiramiento de cadenas musculares y masoterapia profunda. Es un trabajo artesanal con base científica.</p>
+                <p><strong data-i18n="about.role">Profesor Superior de Educación Física y Masoterapeuta.</strong></p>
+                <p data-i18n="about.p1">Mi objetivo es brindarte alivio a corto y largo plazo de manera profesional comenzando con una anamnesis completa hasta mediciones de composición corporal y rangos de movimiento. Lo hago porque estoy convencido de que <strong>lo que no se mide no se puede mejorar</strong>; y si venís a verme, es porque buscás una mejora real, además de un rato de calma.</p>
+                <p data-i18n="about.p2">Comprendo desde mi propia experiencia los dolores propios del trabajo en oficina, el desgaste deportivo y la vida cotidiana.</p>
+                <p data-i18n="about.p3">Desde mi enfoque te ofrezco que vuelvas a encontrar tu equilibrio a través de clases de entrenamiento funcional y estiramiento, como también con técnicas de estiramiento de cadenas musculares y masoterapia profunda. Es un trabajo artesanal con base científica.</p>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
         <div class="cta-content animate-on-scroll">
-            <h2>Comenzá tu camino al bienestar</h2>
-            <p>Reservá tu primera sesión y descubrí cómo podemos ayudarte a sentirte mejor</p>
-            <a href="turnero.html" class="btn-cta">Agendar Turno</a>
+            <h2 data-i18n="cta.title">Comenzá tu camino al bienestar</h2>
+            <p data-i18n="cta.subtitle">Reservá tu primera sesión y descubrí cómo podemos ayudarte a sentirte mejor</p>
+            <a href="turnero.html" class="btn-cta" data-i18n="cta.btn">Agendar Turno</a>
         </div>
     </section>
 
@@ -773,7 +787,7 @@
                 <a href="https://www.google.com/maps/search/?api=1&query=Bolivar+y+Belgrano+San+Telmo+CABA" target="_blank" class="social-icon" title="Ver Ubicación en Maps">
                     <i class="fas fa-map-location-dot"></i>
                 </a>
-                <a href="https://linkedin.com/in/tu_usuario" target="_blank" class="social-icon" title="LinkedIn">
+                <a href="#" target="_blank" class="social-icon" title="LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
             </div>
@@ -782,6 +796,83 @@
     </footer>
 
     <script>
+        // --- MULTILENGUAJE ---
+        const translations = {
+            es: {
+                "nav.home": "Inicio", "nav.services": "Servicios", "nav.about": "¿Quién soy?", "nav.contact": "Contacto", "nav.book": "Reservar",
+                "hero.title": "Bienestar Estructural", "hero.subtitle": "Entrenamiento personalizado y sesiones de masajes terapéuticos en San Telmo.", "hero.cta": "Agendar Turno",
+                "services.label": "Nuestra Propuesta", "services.title": "Sesiones y Tratamientos", "services.subtitle": "Un enfoque técnico para liberar patrones de tensión y recuperar la funcionalidad del movimiento.",
+                "services.express.title": "Masaje Express", "services.express.desc": "Masaje focalizado en una zona específica (espalda alta o piernas) para aliviar contracturas agudas.",
+                "services.integral.title": "Masaje Integral", "services.integral.desc": "El estándar de la casa. Combinación de técnicas descontracturantes profundas, estiramientos asistidos y aromaterapia.",
+                "services.immersion.title": "Inmersión Total", "services.immersion.desc": "Dos horas dedicadas a trabajar el cuerpo completo con detalle minucioso. Ideal para deportistas.",
+                "services.4hands.title": "Masaje a 4 Manos", "services.4hands.desc": "Doble sincronización. Dos terapeutas trabajando en espejo para sobrecargar los sentidos.",
+                "services.training.title": "Entrenamiento Personalizado", "services.training.desc": "Clases 1 a 1 enfocadas en movilidad, fuerza funcional y prevención de lesiones.",
+                "time.60": "60 Minutos", "time.90": "90 Minutos", "time.120": "120 Minutos",
+                "about.label": "Director & Terapeuta", "about.role": "Profesor Superior de Educación Física y Masoterapeuta.",
+                "about.p1": "Mi objetivo es brindarte alivio a corto y largo plazo comenzando con una anamnesis completa. Lo que no se mide no se puede mejorar.",
+                "about.p2": "Comprendo desde mi propia experiencia los dolores propios del trabajo en oficina y el desgaste deportivo.",
+                "about.p3": "Ofrezco recuperar el equilibrio a través de entrenamiento funcional y masoterapia profunda. Es un trabajo artesanal con base científica.",
+                "cta.title": "Comenzá tu camino al bienestar", "cta.subtitle": "Reservá tu primera sesión y descubrí cómo podemos ayudarte a sentirte mejor", "cta.btn": "Agendar Turno"
+            },
+            en: {
+                "nav.home": "Home", "nav.services": "Services", "nav.about": "About Me", "nav.contact": "Contact", "nav.book": "Book Now",
+                "hero.title": "Structural Wellness", "hero.subtitle": "Personalized training and therapeutic massage sessions in San Telmo.", "hero.cta": "Book Appointment",
+                "services.label": "Our Proposal", "services.title": "Sessions & Treatments", "services.subtitle": "A technical approach to release tension patterns and restore movement functionality.",
+                "services.express.title": "Express Massage", "services.express.desc": "Focused massage on a specific area (upper back or legs) to relieve acute contractures.",
+                "services.integral.title": "Integral Massage", "services.integral.desc": "The house standard. Combination of deep tissue techniques, assisted stretching, and aromatherapy.",
+                "services.immersion.title": "Total Immersion", "services.immersion.desc": "Two hours dedicated to working the full body in minute detail. Ideal for athletes.",
+                "services.4hands.title": "4-Hands Massage", "services.4hands.desc": "Double synchronization. Two therapists working in mirror to overload senses.",
+                "services.training.title": "Personal Training", "services.training.desc": "1-on-1 classes focused on mobility, functional strength, and injury prevention.",
+                "time.60": "60 Minutes", "time.90": "90 Minutes", "time.120": "120 Minutes",
+                "about.label": "Director & Therapist", "about.role": "Senior Professor of Physical Education & Massage Therapist.",
+                "about.p1": "My goal is to provide short and long-term relief starting with a complete anamnesis. What is not measured cannot be improved.",
+                "about.p2": "I understand from my own experience the pains of office work and sports wear and tear.",
+                "about.p3": "I offer to restore balance through functional training and deep massage therapy. It is artisanal work with a scientific basis.",
+                "cta.title": "Start your path to wellness", "cta.subtitle": "Book your first session and discover how we can help you feel better", "cta.btn": "Book Appointment"
+            },
+            pt: {
+                "nav.home": "Início", "nav.services": "Serviços", "nav.about": "Sobre Mim", "nav.contact": "Contato", "nav.book": "Reservar",
+                "hero.title": "Bem-estar Estrutural", "hero.subtitle": "Treinamento personalizado e sessões de massagem terapêutica em San Telmo.", "hero.cta": "Agendar Horário",
+                "services.label": "Nossa Proposta", "services.title": "Sessões e Tratamentos", "services.subtitle": "Uma abordagem técnica para liberar padrões de tensão e restaurar a funcionalidade.",
+                "services.express.title": "Massagem Express", "services.express.desc": "Massagem focada em uma área específica (costas ou pernas) para aliviar contraturas agudas.",
+                "services.integral.title": "Massagem Integral", "services.integral.desc": "O padrão da casa. Combinação de técnicas de tecidos profundos, alongamento assistido e aromaterapia.",
+                "services.immersion.title": "Imersão Total", "services.immersion.desc": "Duas horas dedicadas a trabalhar o corpo inteiro com detalhes minuciosos. Ideal para atletas.",
+                "services.4hands.title": "Massagem a 4 Mãos", "services.4hands.desc": "Sincronização dupla. Dois terapeutas trabalhando em espelho para sobrecarregar os sentidos.",
+                "services.training.title": "Treinamento Personalizado", "services.training.desc": "Aulas 1 a 1 focadas em mobilidade, força funcional e prevenção de lesões.",
+                "time.60": "60 Minutos", "time.90": "90 Minutos", "time.120": "120 Minutos",
+                "about.label": "Diretor e Terapeuta", "about.role": "Professor Superior de Educação Física e Massoterapeuta.",
+                "about.p1": "Meu objetivo é proporcionar alívio a curto e longo prazo. O que não é medido não pode ser melhorado.",
+                "about.p2": "Entendo, por experiência própria, as dores do trabalho em escritório e o desgaste esportivo.",
+                "about.p3": "Ofereço restaurar o equilíbrio através do treinamento funcional e massoterapia profunda. É um trabalho artesanal com base científica.",
+                "cta.title": "Comece seu caminho para o bem-estar", "cta.subtitle": "Reserve sua primeira sessão e descubra como podemos ajudá-lo", "cta.btn": "Agendar Horário"
+            },
+            it: {
+                "nav.home": "Home", "nav.services": "Servizi", "nav.about": "Chi Sono", "nav.contact": "Contatto", "nav.book": "Prenotare",
+                "hero.title": "Benessere Strutturale", "hero.subtitle": "Allenamento personalizzato e sessioni di massaggio terapeutico a San Telmo.", "hero.cta": "Prenota Appuntamento",
+                "services.label": "La Nostra Proposta", "services.title": "Sessioni e Trattamenti", "services.subtitle": "Un approccio tecnico per liberare modelli di tensione e ripristinare la funzionalità.",
+                "services.express.title": "Massaggio Express", "services.express.desc": "Massaggio focalizzato su una zona specifica per alleviare contratture acute.",
+                "services.integral.title": "Massaggio Integrale", "services.integral.desc": "Lo standard della casa. Combinazione di tecniche profonde, stretching assistito e aromaterapia.",
+                "services.immersion.title": "Immersione Totale", "services.immersion.desc": "Due ore dedicate a lavorare su tutto il corpo nei minimi dettagli. Ideale per atleti.",
+                "services.4hands.title": "Massaggio a 4 Mani", "services.4hands.desc": "Doppia sincronizzazione. Due terapisti che lavorano a specchio per sovraccaricare i sensi.",
+                "services.training.title": "Allenamento Personalizzato", "services.training.desc": "Lezioni 1 a 1 focalizzate su mobilità, forza funzionale e prevenzione degli infortuni.",
+                "time.60": "60 Minuti", "time.90": "90 Minuti", "time.120": "120 Minuti",
+                "about.label": "Direttore e Terapista", "about.role": "Professore Superiore di Educazione Fisica e Massoterapista.",
+                "about.p1": "Il mio obiettivo è fornire sollievo a breve e lungo termine. Ciò che non si misura non si può migliorare.",
+                "about.p2": "Comprendo per esperienza personale i dolori del lavoro d'ufficio e l'usura sportiva.",
+                "about.p3": "Offro di ripristinare l'equilibrio attraverso l'allenamento funzionale e la massoterapia profonda.",
+                "cta.title": "Inizia il tuo percorso di benessere", "cta.subtitle": "Prenota la tua prima sessione e scopri come possiamo aiutarti", "cta.btn": "Prenota Appuntamento"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+        }
+
         // Smooth scroll for all anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -803,19 +894,14 @@
             }
         });
 
-        // Animate on scroll with Intersection Observer
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
+        // Animate on scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('animated');
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
 
         document.querySelectorAll('.animate-on-scroll').forEach(el => {
             observer.observe(el);
@@ -831,8 +917,7 @@
             document.getElementById('navLinks').classList.remove('active');
             document.getElementById('menuToggle').classList.remove('active');
         }
-        
-        // Close menu on outside click
+
         document.addEventListener('click', (e) => {
             const navLinks = document.getElementById('navLinks');
             const menuToggle = document.querySelector('.menu-toggle');
@@ -841,7 +926,7 @@
             }
         });
 
-        // Parallax effect on hero image
+        // Parallax effect
         window.addEventListener('scroll', () => {
             const hero = document.querySelector('.hero-image');
             const scrolled = window.pageYOffset;
