@@ -599,7 +599,7 @@
             // Formato para Google: YYYYMMDDTHHMMSS
             const fmt = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
             
-            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Bolivar y Belgrano, San Telmo')}`;
+            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Deán Funes y Av. Caseros, Parque Patricios')}`;
             
             // ICS Generation
             const icsContent = `BEGIN:VCALENDAR
@@ -610,7 +610,7 @@ DTSTART:${fmt(start)}
 DTEND:${fmt(end)}
 SUMMARY:Turno Bell Studio: ${serviceName}
 DESCRIPTION:Recordá la tolerancia de 15 min.
-LOCATION:Bolivar y Belgrano, San Telmo
+LOCATION:Deán Funes y Av. Caseros, Parque Patricios
 END:VEVENT
 END:VCALENDAR`;
             
