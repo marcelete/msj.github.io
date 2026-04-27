@@ -153,19 +153,59 @@
             box-shadow: 0 6px 25px rgba(122, 105, 74, 0.4);
         }
 
-        /* Language Selector */
-        .lang-select {
-            border: none;
-            background: transparent;
-            font-family: 'Inter', sans-serif;
+        /* Language Dropdown */
+        .lang-dropdown { position: relative; margin-left: 10px; }
+        .lang-trigger {
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: 6px 12px;
             font-size: 0.75rem;
             font-weight: 600;
-            color: var(--color-text);
             cursor: pointer;
-            text-transform: uppercase;
-            margin-left: 10px;
-            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            color: var(--color-text);
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
+        .lang-trigger:hover { border-color: var(--color-earth); color: var(--color-earth); }
+        .lang-chevron { font-size: 0.55rem; transition: transform 0.2s; opacity: 0.5; }
+        .lang-dropdown.open .lang-chevron { transform: rotate(180deg); }
+        .lang-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            list-style: none;
+            padding: 6px;
+            min-width: 150px;
+            display: none;
+            z-index: 2000;
+        }
+        .lang-dropdown.open .lang-menu { display: block; animation: dropIn 0.15s ease; }
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .lang-menu li {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            transition: background 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-text);
+            font-weight: 500;
+        }
+        .lang-menu li:hover { background: var(--color-light-gray); color: var(--color-earth); }
 
         /* Hero */
         .hero { 
@@ -683,12 +723,19 @@
                 <li><a href="#profesional" onclick="closeMenu()" data-i18n="nav.about">¿Quien soy?</a></li>
                 <li><a href="#contacto" onclick="closeMenu()" data-i18n="nav.contact">Contacto</a></li>
                 <li>
-                    <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
-                        <option value="es">ES</option>
-                        <option value="en">EN</option>
-                        <option value="pt">PT</option>
-                        <option value="it">IT</option>
-                    </select>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button class="lang-trigger" id="langTrigger" onclick="toggleLangMenu()" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="lang-flag">🌐</span>
+                            <span class="lang-label">Idioma</span>
+                            <span class="lang-chevron">▾</span>
+                        </button>
+                        <ul class="lang-menu" id="langMenu" role="listbox">
+                            <li role="option" onclick="changeLanguage('es')"><span>🇦🇷</span> Español</li>
+                            <li role="option" onclick="changeLanguage('en')"><span>🇺🇸</span> English</li>
+                            <li role="option" onclick="changeLanguage('pt')"><span>🇧🇷</span> Português</li>
+                            <li role="option" onclick="changeLanguage('it')"><span>🇮🇹</span> Italiano</li>
+                        </ul>
+                    </div>
                 </li>
                 <li><a href="turnero.html" class="btn-reservar" data-i18n="nav.book">Reservar</a></li>
             </ul>
@@ -894,7 +941,29 @@
             }
         };
 
+        const LANG_META = {
+            es: { flag: '🇦🇷', label: 'ES' },
+            en: { flag: '🇺🇸', label: 'EN' },
+            pt: { flag: '🇧🇷', label: 'PT' },
+            it: { flag: '🇮🇹', label: 'IT' }
+        };
+
+        function toggleLangMenu() {
+            const dropdown = document.getElementById('langDropdown');
+            const trigger = document.getElementById('langTrigger');
+            const isOpen = dropdown.classList.toggle('open');
+            trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        }
+
         function changeLanguage(lang) {
+            const dropdown = document.getElementById('langDropdown');
+            const trigger = document.getElementById('langTrigger');
+            dropdown.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+
+            document.querySelector('#langTrigger .lang-flag').textContent = LANG_META[lang].flag;
+            document.querySelector('#langTrigger .lang-label').textContent = LANG_META[lang].label;
+
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[lang][key]) {
@@ -960,6 +1029,10 @@
             const menuToggle = document.querySelector('.menu-toggle');
             if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
                 closeMenu();
+            }
+            if (!e.target.closest('#langDropdown')) {
+                document.getElementById('langDropdown')?.classList.remove('open');
+                document.getElementById('langTrigger')?.setAttribute('aria-expanded', 'false');
             }
         });
 
