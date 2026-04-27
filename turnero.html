@@ -52,26 +52,29 @@
         .lang-dropdown { position: relative; margin-left: 15px; }
         .lang-trigger {
             background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 20px;
-            padding: 6px 12px;
+            border: none;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
             font-size: 0.75rem;
             font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-earth);
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
-            font-family: 'Inter', sans-serif;
-            color: var(--color-text);
-            transition: all 0.2s ease;
-            white-space: nowrap;
+            transition: opacity 0.2s;
         }
-        .lang-trigger:hover { border-color: var(--color-earth); color: var(--color-earth); }
-        .lang-chevron { font-size: 0.55rem; transition: transform 0.2s; opacity: 0.5; }
+        .lang-trigger:hover { opacity: 0.75; }
+        .lang-icon-wrap { display: flex; align-items: center; }
+        .lang-icon-wrap i { font-size: 0.85rem; color: inherit; }
+        .lang-icon-wrap img { border-radius: 2px; display: block; }
+        .lang-chevron { font-size: 0.5rem; opacity: 0.5; transition: transform 0.2s; }
         .lang-dropdown.open .lang-chevron { transform: rotate(180deg); }
         .lang-menu {
             position: absolute;
-            top: calc(100% + 8px);
+            top: calc(100% + 10px);
             right: 0;
             background: white;
             border: 1px solid var(--color-border);
@@ -79,7 +82,7 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             list-style: none;
             padding: 6px;
-            min-width: 150px;
+            min-width: 155px;
             display: none;
             z-index: 2000;
         }
@@ -100,6 +103,7 @@
             color: var(--color-text);
             font-weight: 500;
         }
+        .lang-menu li img { border-radius: 2px; }
         .lang-menu li:hover { background: var(--color-cream); color: var(--color-earth); }
 
         .container { max-width: 1000px; margin: 40px auto; padding: 0 6%; min-height: 80vh; }
@@ -249,15 +253,15 @@
                 <a href="index.html" class="back-link" data-i18n="back">← Volver</a>
                 <div class="lang-dropdown" id="langDropdown">
                     <button class="lang-trigger" id="langTrigger" onclick="toggleLangMenu()" aria-haspopup="listbox" aria-expanded="false">
-                        <span class="lang-flag">🌐</span>
+                        <span class="lang-icon-wrap" id="langIconWrap"><i class="fas fa-globe"></i></span>
                         <span class="lang-label">Idioma</span>
                         <span class="lang-chevron">▾</span>
                     </button>
                     <ul class="lang-menu" id="langMenu" role="listbox">
-                        <li role="option" onclick="changeLanguage('es')"><span>🇦🇷</span> Español</li>
-                        <li role="option" onclick="changeLanguage('en')"><span>🇺🇸</span> English</li>
-                        <li role="option" onclick="changeLanguage('pt')"><span>🇧🇷</span> Português</li>
-                        <li role="option" onclick="changeLanguage('it')"><span>🇮🇹</span> Italiano</li>
+                        <li role="option" onclick="changeLanguage('es')"><img src="https://flagcdn.com/20x15/ar.png" width="20" height="15" alt="Argentina"> Español</li>
+                        <li role="option" onclick="changeLanguage('en')"><img src="https://flagcdn.com/20x15/us.png" width="20" height="15" alt="USA"> English</li>
+                        <li role="option" onclick="changeLanguage('pt')"><img src="https://flagcdn.com/20x15/br.png" width="20" height="15" alt="Brasil"> Português</li>
+                        <li role="option" onclick="changeLanguage('it')"><img src="https://flagcdn.com/20x15/it.png" width="20" height="15" alt="Italia"> Italiano</li>
                     </ul>
                 </div>
             </div>
@@ -505,10 +509,10 @@
         };
 
         const LANG_META = {
-            es: { flag: '🇦🇷', label: 'ES' },
-            en: { flag: '🇺🇸', label: 'EN' },
-            pt: { flag: '🇧🇷', label: 'PT' },
-            it: { flag: '🇮🇹', label: 'IT' }
+            es: { flag: 'https://flagcdn.com/16x12/ar.png', flagAlt: 'Argentina', label: 'ES' },
+            en: { flag: 'https://flagcdn.com/16x12/us.png', flagAlt: 'USA',       label: 'EN' },
+            pt: { flag: 'https://flagcdn.com/16x12/br.png', flagAlt: 'Brasil',    label: 'PT' },
+            it: { flag: 'https://flagcdn.com/16x12/it.png', flagAlt: 'Italia',    label: 'IT' }
         };
 
         let currentLang = 'es';
@@ -544,7 +548,7 @@
             const trigger = document.getElementById('langTrigger');
             dropdown.classList.remove('open');
             trigger.setAttribute('aria-expanded', 'false');
-            document.querySelector('#langTrigger .lang-flag').textContent = LANG_META[lang].flag;
+            document.getElementById('langIconWrap').innerHTML = `<img src="${LANG_META[lang].flag}" width="16" height="12" alt="${LANG_META[lang].flagAlt}" style="border-radius:2px;display:block">`;
             document.querySelector('#langTrigger .lang-label').textContent = LANG_META[lang].label;
 
             // Textos estáticos
