@@ -519,8 +519,8 @@
                 const dateString = dateObj.toISOString().split('T')[0];
                 const isHoliday = HOLIDAYS_2026.includes(dateString);
 
-                // Días habilitados: Mar(2), Mié(3), Vie(5), Sáb(6). No feriados.
-                const isWorkDay = [2, 3, 5, 6].includes(dayOfWeek) && !isHoliday;
+                // Días habilitados: Mié(3), Vie(5), Sáb(6), Dom(0). No feriados.
+                const isWorkDay = [0, 3, 5, 6].includes(dayOfWeek) && !isHoliday;
                 const isPast = dateObj < today;
 
                 const el = document.createElement('div');
@@ -560,8 +560,8 @@
             container.innerHTML = '';
             let slots = [];
 
-            if ([2, 3, 5].includes(dayOfWeek)) slots = ['17:00 - 18:30', '19:00 - 20:30', '21:00 - 22:30'];
-            else if (dayOfWeek === 6) slots = ['07:00 - 08:30'];
+            if ([3, 5].includes(dayOfWeek)) slots = ['17:00 - 18:30', '19:00 - 20:30', '21:00 - 22:30'];
+            else if ([0, 6].includes(dayOfWeek)) slots = ['07:00 - 08:30'];
 
             const formattedDate = `${selectedDate.day}/${selectedDate.month + 1}/${selectedDate.year}`;
 
@@ -631,7 +631,7 @@
             // Formato para Google: YYYYMMDDTHHMMSS
             const fmt = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
             
-            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Deán Funes y Av. Caseros, Parque Patricios')}`;
+            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Próximamente en Parque Patricios')}`;
             
             // ICS Generation
             const icsContent = `BEGIN:VCALENDAR
@@ -642,7 +642,7 @@ DTSTART:${fmt(start)}
 DTEND:${fmt(end)}
 SUMMARY:Turno Bell Studio: ${serviceName}
 DESCRIPTION:Recordá la tolerancia de 15 min.
-LOCATION:Deán Funes y Av. Caseros, Parque Patricios
+LOCATION:Próximamente en Parque Patricios
 END:VEVENT
 END:VCALENDAR`;
             
