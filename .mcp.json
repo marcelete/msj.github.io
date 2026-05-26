@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "n8n-bellizia": {
+      "type": "http",
+      "url": "https://belliziawellness.app.n8n.cloud/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer ${N8N_BELLIZIA_TOKEN}"
+      }
+    }
+  }
+}
