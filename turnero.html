@@ -434,7 +434,7 @@
 
     <script>
         // === CONFIGURACIÓN ===
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwduTI9apkTEuufQsfEIyxGOX4zcO0EyYNXbhqHZsgz-2I1Fcjpj1bGlHiOaVaOxW4lHA/exec'
+        const N8N_WEBHOOK_URL = 'https://belliziawellness.app.n8n.cloud/webhook/booking-reserva';
         const ALIAS_MP = "bell.studio";
         const WA_NUMBER = "5491165118935"; 
 
@@ -566,9 +566,12 @@
 
         async function fetchOccupiedSlots() {
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const response = await fetch(`${N8N_WEBHOOK_URL}?action=check-availability`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
                 const data = await response.json();
-                occupiedSlots = data;
+                occupiedSlots = data.occupiedSlots || [];
             } catch (error) {
                 occupiedSlots = [];
                 document.getElementById('availabilityWarning').classList.add('visible');
@@ -791,13 +794,23 @@ END:VCALENDAR`;
             };
 
             try {
-                // 1. Enviar a Google Sheets
-                await fetch(GOOGLE_SCRIPT_URL, {
+                // 1. Enviar a n8n Webhook
+                const response = await fetch(N8N_WEBHOOK_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(formData),
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                // Validar respuesta
+                if (!result.success) {
+                    throw new Error(result.message || 'Error al procesar la reserva');
+                }
 
                 // 2. Preparar Pantalla de Éxito
                 document.getElementById('confirmAmount').textContent = `$${depositStr}`;
