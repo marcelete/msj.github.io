@@ -141,16 +141,31 @@
         .calendar-nav button:hover { border-color: var(--color-earth); color: var(--color-earth); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
         .calendar-day-header { text-align: center; font-size: 0.7rem; color: #999; padding: 5px 0; font-weight: 600; }
-        .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 50%; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+        .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 50%; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; background: none; color: inherit; font-family: inherit; padding: 0; width: 100%; position: relative; }
         .calendar-day:hover:not(.disabled) { border-color: var(--color-earth); color: var(--color-earth); }
+        .calendar-day:focus-visible { outline: 2px solid var(--color-earth); outline-offset: 2px; }
         .calendar-day.selected { background: var(--color-earth); color: white; }
+        .calendar-day.selected:hover { color: white; }
         .calendar-day.disabled { opacity: 0.3; cursor: not-allowed; }
-        
+        .calendar-day.full { text-decoration: line-through; }
+        .calendar-day.today:not(.selected)::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; border-radius: 50%; background: var(--color-earth); }
+
         .time-slots { display: grid; gap: 10px; }
-        .time-slot { padding: 12px; border: 1px solid var(--color-border); border-radius: 5px; text-align: center; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
-        .time-slot:hover:not(.disabled) { border-color: var(--color-earth); color: var(--color-earth); }
+        .time-slot { padding: 12px; border: 1px solid var(--color-border); border-radius: 5px; text-align: center; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; background: white; color: inherit; font-family: inherit; width: 100%; }
+        .time-slot:hover { border-color: var(--color-earth); color: var(--color-earth); }
+        .time-slot:focus-visible { outline: 2px solid var(--color-earth); outline-offset: 2px; }
         .time-slot.selected { background: var(--color-earth); color: white; border-color: var(--color-earth); }
-        .time-slot.disabled { opacity: 0.5; cursor: not-allowed; background: #f9f9f9; text-decoration: line-through; color: #ccc; border-color: #eee; }
+        .slots-hint { text-align: center; color: #999; padding: 20px; font-size: 0.9rem; }
+        .slots-hint .btn-retry { margin-top: 12px; background: white; border: 1px solid var(--color-earth); color: var(--color-earth); padding: 8px 18px; border-radius: 50px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        .slots-hint a { color: var(--color-earth); }
+
+        /* Avisos dentro del flujo (turno tomado, error de verificación) */
+        .inline-alert { display: none; background: #fdecea; color: #8a1c1c; border: 1px solid #f5c2c0; border-radius: 8px; padding: 12px 16px; margin-bottom: 15px; font-size: 0.85rem; gap: 10px; align-items: flex-start; }
+        .inline-alert.visible { display: flex; }
+
+        /* Validación de campos */
+        .form-group input.input-error { border-color: #c62828; }
+        .field-error { color: #c62828; font-size: 0.75rem; }
 
         /* Form */
         .form-section { background: white; padding: 40px; border-radius: 10px; border: 1px solid var(--color-border); opacity: 0.5; pointer-events: none; transition: opacity 0.3s; }
@@ -283,7 +298,7 @@
 
             <div class="availability-warning" id="availabilityWarning" role="alert">
                 <i class="fas fa-exclamation-triangle"></i>
-                <span>No se pudo verificar la disponibilidad en tiempo real. Los horarios mostrados pueden no estar actualizados. Si tenés dudas, consultá por WhatsApp.</span>
+                <span data-i18n="warning">No pudimos consultar la disponibilidad en este momento. Probá de nuevo en unos minutos o consultá por WhatsApp.</span>
             </div>
 
             <div class="booking-steps">
@@ -303,12 +318,12 @@
 
             <div style="margin-bottom: 30px; background: white; padding: 20px; border-radius: 10px; border: 1px solid var(--color-border); box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                 <label style="font-weight: 600; display: block; margin-bottom: 10px; font-family: 'Playfair Display', serif; font-size: 1.1rem;" data-i18n="selectService">Seleccioná el Servicio:</label>
-                <select id="serviceSelect" onchange="updateTotal()" style="width: 100%; padding: 12px; border: 1px solid var(--color-border); border-radius: 5px;">
-                    <option value="sesion90" data-price="70000" data-name="Sesión Integral (90 min)">Masaje Integral (90 min) - $70.000</option>
-                    <option value="sesion60" data-price="45000" data-name="Sesión Express (60 min)">Masaje Express (60 min) - $45.000</option>
-                    <option value="sesion120" data-price="90000" data-name="Inmersión Total (120 min)">Masaje Total (120 min) - $90.000</option>
-                    <option value="4manos" data-price="100000" data-name="Masaje a 4 Manos">Masaje a 4 Manos: con 2 masajistas (60 min) - $100.000</option>
-                    <option value="entrenamiento" data-price="25000" data-name="Clase Personalizada">Clase Personalizada (60 min) - $25.000</option>
+                <select id="serviceSelect" onchange="onServiceChange()" style="width: 100%; padding: 12px; border: 1px solid var(--color-border); border-radius: 5px;">
+                    <option value="sesion90" data-price="70000" data-duration="90" data-name="Sesión Integral (90 min)">Masaje Integral (90 min) - $70.000</option>
+                    <option value="sesion60" data-price="45000" data-duration="60" data-name="Sesión Express (60 min)">Masaje Express (60 min) - $45.000</option>
+                    <option value="sesion120" data-price="90000" data-duration="120" data-name="Inmersión Total (120 min)">Masaje Total (120 min) - $90.000</option>
+                    <option value="4manos" data-price="100000" data-duration="60" data-name="Masaje a 4 Manos">Masaje a 4 Manos: con 2 masajistas (60 min) - $100.000</option>
+                    <option value="entrenamiento" data-price="25000" data-duration="60" data-name="Clase Personalizada">Clase Personalizada (60 min) - $25.000</option>
                 </select>
             </div>
 
@@ -327,20 +342,24 @@
 
                 <div class="section-card">
                     <h3 style="margin-bottom: 15px;" data-i18n="step2Header">2. Seleccionar Horario</h3>
-                    <div class="time-slots" id="timeSlots">
-                        <div style="text-align: center; color: #999; padding: 20px;" data-i18n="selectDateFirst">Primero seleccioná una fecha</div>
+                    <div class="inline-alert" id="slotAlert" role="alert">
+                        <i class="fas fa-exclamation-circle" style="margin-top: 2px;"></i>
+                        <span id="slotAlertText"></span>
+                    </div>
+                    <div class="time-slots" id="timeSlots" aria-live="polite">
+                        <div class="slots-hint" data-i18n="selectDateFirst">Primero seleccioná una fecha</div>
                     </div>
                 </div>
             </div>
 
             <div class="form-section" id="formSection">
                 <h3 style="margin-bottom: 20px;" data-i18n="step3Header">3. Completar Datos</h3>
-                <form id="bookingForm">
+                <form id="bookingForm" novalidate>
                     <div class="form-grid">
-                        <div class="form-group"><label data-i18n="form.name">Nombre</label><input type="text" id="firstName" required></div>
-                        <div class="form-group"><label data-i18n="form.lastname">Apellido</label><input type="text" id="lastName" required></div>
-                        <div class="form-group"><label data-i18n="form.email">Email</label><input type="email" id="email" required></div>
-                        <div class="form-group"><label data-i18n="form.phone">Teléfono (WhatsApp)</label><input type="tel" id="phone" placeholder="+54 9..." required></div>
+                        <div class="form-group"><label for="firstName" data-i18n="form.name">Nombre</label><input type="text" id="firstName" autocomplete="given-name" required></div>
+                        <div class="form-group"><label for="lastName" data-i18n="form.lastname">Apellido</label><input type="text" id="lastName" autocomplete="family-name" required></div>
+                        <div class="form-group"><label for="email" data-i18n="form.email">Email</label><input type="email" id="email" autocomplete="email" required></div>
+                        <div class="form-group"><label for="phone" data-i18n="form.phone">Teléfono (WhatsApp)</label><input type="tel" id="phone" autocomplete="tel" placeholder="+54 9..." required></div>
                         <div class="form-group full-width">
                             <label data-i18n="form.known">¿Ya nos conocemos?</label>
                             <select id="firstTime">
@@ -366,6 +385,11 @@
                             <span data-i18n="summary.deposit">Seña a transferir (50%):</span>
                             <span id="summaryTotal">$0</span>
                         </div>
+                    </div>
+
+                    <div class="inline-alert" id="formAlert" role="alert">
+                        <i class="fas fa-exclamation-circle" style="margin-top: 2px;"></i>
+                        <span id="formAlertText"></span>
                     </div>
 
                     <button type="submit" class="btn-primary" id="submitBtn" data-i18n="btn.confirm">Confirmar Reserva</button>
@@ -433,13 +457,47 @@
     </div>
 
     <script>
-        // === CONFIGURACIÓN ===
+        // ================================================================
+        // CONFIGURACIÓN
+        // ================================================================
+        // Backend en Google Apps Script (NO se modificó): registra la reserva
+        // en la planilla y envía los emails al dueño y al cliente.
+        //   GET  → lista de turnos tomados ("fecha|hora")
+        //   POST → nueva reserva (mismo formato de siempre)
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwduTI9apkTEuufQsfEIyxGOX4zcO0EyYNXbhqHZsgz-2I1Fcjpj1bGlHiOaVaOxW4lHA/exec'
         const ALIAS_MP = "bell.studio";
-        const WA_NUMBER = "5491165118935"; 
+        const WA_NUMBER = "5491165118935";
+
+        // Todas las fechas y horas se interpretan en hora de Buenos Aires,
+        // aunque el cliente reserve desde otro país.
+        const STUDIO_TZ = 'America/Argentina/Buenos_Aires';
+        const STUDIO_UTC_OFFSET = '-03:00'; // Argentina no usa horario de verano
+
+        // Agenda semanal (0 = domingo, 1 = lunes … 6 = sábado).
+        // Los feriados usan el horario de fin de semana.
+        const SCHEDULE = {
+            weekday: { days: [3, 5],  slots: ['19:00 - 20:30', '20:30 - 22:00'] },
+            weekend: { days: [0, 6],  slots: ['07:00 - 08:30', '08:30 - 10:00', '10:00 - 11:30', '11:30 - 13:00'] }
+        };
+
+        // Fechas puntuales SIN atención (vacaciones, fines de semana libres, etc.).
+        // Formato 'AAAA-MM-DD'. Ej: '2026-12-31'
+        const BLOCKED_DATES = [
+        ];
+
+        // Anticipación mínima (en minutos) para reservar un turno del mismo día.
+        // 0 = se puede reservar hasta que el turno empiece.
+        const MIN_NOTICE_MINUTES = 0;
+
+        // La lista de turnos tomados no dice qué servicio se reservó, así que
+        // cada turno ocupado bloquea un bloque completo de agenda (90 min).
+        const BOOKED_SLOT_MINUTES = 90;
+
+        // Si la disponibilidad descargada tiene más de 15 s, se vuelve a pedir.
+        const AVAILABILITY_MAX_AGE_MS = 15000;
 
         // FERIADOS ARGENTINA 2026 (Hardcoded para evitar API calls)
-        const HOLIDAYS_2026 = [
+        const HOLIDAYS = [
             "2026-01-01", // Año Nuevo
             "2026-02-16", // Carnaval
             "2026-02-17", // Carnaval
@@ -468,7 +526,11 @@
                 btn: { confirm: "Confirmar Reserva", disclaimer: "Al confirmar, recibirás los datos para transferir la seña.", whatsapp: "Enviar Comprobante", home: "Volver al inicio" },
                 success: { title: "¡Reserva Registrada!", subtitle: "Tu turno ha sido pre-reservado. Para confirmarlo definitivamente, por favor realizá la transferencia de la seña.", spam: "<strong>Importante:</strong> Revisá tu casilla de <b>Spam</b> para encontrar el mail con los detalles.", alias: "Alias Mercado Pago", amount: "Monto a Transferir" },
                 calendar: { label: "Agendalo para no olvidarte:", google: "Google Calendar", apple: "Apple / Outlook" },
-                final: { steps: "Pasos finales:", step1: "Transferí el monto indicado al alias.", step2: "Enviame el comprobante por WhatsApp.", step3: "¡Listo! Tu turno queda asegurado." }
+                final: { steps: "Pasos finales:", step1: "Transferí el monto indicado al alias.", step2: "Enviame el comprobante por WhatsApp.", step3: "¡Listo! Tu turno queda asegurado." },
+                warning: "No pudimos consultar la disponibilidad en este momento. Probá de nuevo en unos minutos o consultá por WhatsApp.",
+                slots: { loading: "Cargando horarios disponibles...", none: "No quedan horarios disponibles para este día. Elegí otra fecha.", error: "No pudimos cargar la disponibilidad.", retry: "Reintentar", orWhatsapp: "o consultá por WhatsApp", full: "sin turnos disponibles", unavailable: "no disponible", past: "pasado" },
+                alerts: { taken: "Ese horario ya no está disponible: acaba de reservarlo otra persona. Elegí otro, por favor.", tooLong: "El horario que habías elegido no alcanza para la duración de este servicio. Elegí otro, por favor.", verify: "No pudimos verificar que el horario siga libre. Revisá tu conexión e intentá de nuevo, o escribime por WhatsApp.", connection: "Hubo un error de conexión. Intentá de nuevo o contactanos por WhatsApp." },
+                errors: { name: "Ingresá tu nombre (solo letras).", lastname: "Ingresá tu apellido (solo letras).", email: "Ingresá un email válido.", phone: "Ingresá un teléfono válido, con código de área.", policy: "Para continuar tenés que aceptar la política de turnos." }
             },
             en: {
                 back: "← Back", processing: "Processing...", title: "Book Appointment", subtitle: "Your wellness starts here",
@@ -480,7 +542,11 @@
                 btn: { confirm: "Confirm Booking", disclaimer: "You will receive deposit details upon confirmation.", whatsapp: "Send Receipt", home: "Back to Home" },
                 success: { title: "Booking Registered!", subtitle: "Your spot is pre-reserved. To confirm it, please transfer the deposit.", spam: "<strong>Important:</strong> Check your <b>Spam</b> folder for the email details.", alias: "Mercado Pago Alias", amount: "Amount to Transfer" },
                 calendar: { label: "Add to calendar:", google: "Google Calendar", apple: "Apple / Outlook" },
-                final: { steps: "Final steps:", step1: "Transfer the amount to the alias.", step2: "Send me the receipt via WhatsApp.", step3: "Done! Your spot is secured." }
+                final: { steps: "Final steps:", step1: "Transfer the amount to the alias.", step2: "Send me the receipt via WhatsApp.", step3: "Done! Your spot is secured." },
+                warning: "We couldn't check availability right now. Please try again in a few minutes or ask via WhatsApp.",
+                slots: { loading: "Loading available times...", none: "No times left for this day. Please pick another date.", error: "We couldn't load availability.", retry: "Try again", orWhatsapp: "or ask via WhatsApp", full: "fully booked", unavailable: "unavailable", past: "past" },
+                alerts: { taken: "That time is no longer available: someone else just booked it. Please choose another one.", tooLong: "The time you picked doesn't fit this service's duration. Please choose another one.", verify: "We couldn't confirm the time is still free. Check your connection and try again, or message me on WhatsApp.", connection: "Connection error. Please try again or contact us via WhatsApp." },
+                errors: { name: "Enter your first name (letters only).", lastname: "Enter your last name (letters only).", email: "Enter a valid email.", phone: "Enter a valid phone number, including area code.", policy: "Please accept the booking policy to continue." }
             },
             pt: {
                 back: "← Voltar", processing: "Processando...", title: "Reservar Horário", subtitle: "Seu bem-estar começa aqui",
@@ -492,7 +558,11 @@
                 btn: { confirm: "Confirmar Reserva", disclaimer: "Ao confirmar, você receberá os dados para transferência.", whatsapp: "Enviar Comprovante", home: "Voltar ao início" },
                 success: { title: "Reserva Registrada!", subtitle: "Seu turno foi pré-reservado. Para confirmar, transfira o sinal.", spam: "<strong>Importante:</strong> Verifique sua caixa de <b>Spam</b> para ver os detalhes.", alias: "Alias Mercado Pago", amount: "Valor a Transferir" },
                 calendar: { label: "Adicione à agenda:", google: "Google Calendar", apple: "Apple / Outlook" },
-                final: { steps: "Passos finais:", step1: "Transfira o valor indicado.", step2: "Envie o comprovante por WhatsApp.", step3: "Pronto! Seu turno está garantido." }
+                final: { steps: "Passos finais:", step1: "Transfira o valor indicado.", step2: "Envie o comprovante por WhatsApp.", step3: "Pronto! Seu turno está garantido." },
+                warning: "Não conseguimos consultar a disponibilidade agora. Tente novamente em alguns minutos ou fale pelo WhatsApp.",
+                slots: { loading: "Carregando horários disponíveis...", none: "Não há mais horários disponíveis neste dia. Escolha outra data.", error: "Não conseguimos carregar a disponibilidade.", retry: "Tentar novamente", orWhatsapp: "ou fale pelo WhatsApp", full: "sem horários disponíveis", unavailable: "indisponível", past: "passado" },
+                alerts: { taken: "Esse horário não está mais disponível: outra pessoa acabou de reservá-lo. Por favor, escolha outro.", tooLong: "O horário escolhido não comporta a duração deste serviço. Por favor, escolha outro.", verify: "Não conseguimos verificar se o horário continua livre. Verifique sua conexão e tente novamente, ou me escreva pelo WhatsApp.", connection: "Erro de conexão. Tente novamente ou fale conosco pelo WhatsApp." },
+                errors: { name: "Informe seu nome (apenas letras).", lastname: "Informe seu sobrenome (apenas letras).", email: "Informe um email válido.", phone: "Informe um telefone válido, com DDD.", policy: "Para continuar, aceite a política de horários." }
             },
             it: {
                 back: "← Indietro", processing: "Elaborazione...", title: "Prenota Appuntamento", subtitle: "Il tuo benessere inizia qui",
@@ -504,7 +574,11 @@
                 btn: { confirm: "Conferma Prenotazione", disclaimer: "Riceverai i dettagli per l'acconto alla conferma.", whatsapp: "Invia Ricevuta", home: "Torna alla Home" },
                 success: { title: "Prenotazione Registrata!", subtitle: "Il tuo posto è pre-riservato. Per confermare, trasferisci l'acconto.", spam: "<strong>Importante:</strong> Controlla la cartella <b>Spam</b> per i dettagli.", alias: "Alias Mercado Pago", amount: "Importo da Trasferire" },
                 calendar: { label: "Aggiungi al calendario:", google: "Google Calendar", apple: "Apple / Outlook" },
-                final: { steps: "Passaggi finali:", step1: "Trasferisci l'importo indicato.", step2: "Inviami la ricevuta via WhatsApp.", step3: "Fatto! Il tuo posto è assicurato." }
+                final: { steps: "Passaggi finali:", step1: "Trasferisci l'importo indicato.", step2: "Inviami la ricevuta via WhatsApp.", step3: "Fatto! Il tuo posto è assicurato." },
+                warning: "Non siamo riusciti a verificare la disponibilità in questo momento. Riprova tra qualche minuto o scrivici su WhatsApp.",
+                slots: { loading: "Caricamento degli orari disponibili...", none: "Non ci sono più orari disponibili per questo giorno. Scegli un'altra data.", error: "Non siamo riusciti a caricare la disponibilità.", retry: "Riprova", orWhatsapp: "oppure scrivici su WhatsApp", full: "completo", unavailable: "non disponibile", past: "passato" },
+                alerts: { taken: "Questo orario non è più disponibile: un'altra persona l'ha appena prenotato. Scegline un altro.", tooLong: "L'orario scelto non è sufficiente per la durata di questo servizio. Scegline un altro.", verify: "Non siamo riusciti a verificare che l'orario sia ancora libero. Controlla la connessione e riprova, oppure scrivimi su WhatsApp.", connection: "Errore di connessione. Riprova o contattaci su WhatsApp." },
+                errors: { name: "Inserisci il tuo nome (solo lettere).", lastname: "Inserisci il tuo cognome (solo lettere).", email: "Inserisci un'email valida.", phone: "Inserisci un numero di telefono valido, con prefisso.", policy: "Per continuare devi accettare la politica degli appuntamenti." }
             }
         };
 
@@ -515,16 +589,195 @@
             it: { flag: 'https://flagcdn.com/16x12/it.png', flagAlt: 'Italia',    label: 'IT' }
         };
 
-        let currentLang = 'es';
-        let currentDate = new Date();
-        let selectedDate = null;
-        let selectedTime = null;
-        let occupiedSlots = [];
+        // ================================================================
+        // UTILIDADES DE FECHA (siempre en hora de Buenos Aires)
+        // ================================================================
+        const pad = n => String(n).padStart(2, '0');
+        const toKey = (y, m, d) => `${y}-${pad(m)}-${pad(d)}`; // m: 1-12 → 'AAAA-MM-DD'
+        const toMinutes = hhmm => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+        const fromMinutes = min => `${pad(Math.floor(min / 60) % 24)}:${pad(min % 60)}`;
 
+        function partsInStudioTZ(date) {
+            const parts = new Intl.DateTimeFormat('en-CA', {
+                timeZone: STUDIO_TZ, year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+            }).formatToParts(date);
+            const get = type => Number(parts.find(p => p.type === type).value);
+            return { key: toKey(get('year'), get('month'), get('day')), minutes: (get('hour') % 24) * 60 + get('minute') };
+        }
+
+        const studioNow = () => partsInStudioTZ(new Date());
+
+        function dayOfWeek(key) {
+            const [y, m, d] = key.split('-').map(Number);
+            return new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+        }
+
+        // ================================================================
+        // ESTADO
+        // ================================================================
+        let currentLang = 'es';
+        const initialNow = studioNow();
+        let viewYear = Number(initialNow.key.slice(0, 4));
+        let viewMonth = Number(initialNow.key.slice(5, 7)) - 1; // 0-11
+        let selectedDate = null;  // { key: 'AAAA-MM-DD', day, month (0-11), year }
+        let selectedTime = null;  // hora de inicio 'HH:MM'
+
+        // Turnos tomados por fecha: { 'AAAA-MM-DD': [minutos de inicio, ...] }
+        const availability = { ok: false, fetchedAt: 0, byDate: {} };
+        const sessionBookings = []; // reservas hechas desde esta pestaña
+        let availabilityRequest = null;
+
+        function t(path) {
+            const lookup = lang => path.split('.').reduce((obj, k) => (obj ? obj[k] : undefined), i18n[lang]);
+            const val = lookup(currentLang);
+            return val !== undefined ? val : (lookup('es') ?? path);
+        }
+
+        // ================================================================
+        // DISPONIBILIDAD (lee la planilla a través del Apps Script)
+        // ================================================================
+        const MONTHS_EN = { Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6, Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12 };
+
+        // Acepta los distintos formatos en que el Apps Script puede devolver la fecha.
+        function parseBookedDate(raw) {
+            const s = String(raw ?? '').trim();
+            let m;
+            // "7/11/2026" — el formato que envía este turnero (D/M/AAAA)
+            if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) return toKey(+m[3], +m[2], +m[1]);
+            // "2026-11-07"
+            if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+            // "Sat Nov 07 2026 00:00:00 GMT-0300 (...)" — Sheets guarda la celda como fecha
+            // y el Apps Script la devuelve como texto. Se toma el día tal cual figura.
+            if ((m = s.match(/^[A-Za-z]{3},? ([A-Za-z]{3}) (\d{1,2}) (\d{4})/)) && MONTHS_EN[m[1]]) return toKey(+m[3], MONTHS_EN[m[1]], +m[2]);
+            // "2026-11-07T03:00:00.000Z" — fecha serializada como JSON
+            if (/^\d{4}-\d{2}-\d{2}T/.test(s)) { const d = new Date(s); if (!isNaN(d)) return partsInStudioTZ(d).key; }
+            return null;
+        }
+
+        // Devuelve la hora de inicio en minutos desde las 00:00.
+        function parseBookedTime(raw) {
+            const s = String(raw ?? '').trim();
+            let m;
+            // "08:30" o "8:30:00"
+            if ((m = s.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/))) return +m[1] * 60 + +m[2];
+            // "Sat Dec 30 1899 08:30:00 GMT-0416 (...)" — Sheets guarda la celda como hora
+            if ((m = s.match(/\s(\d{1,2}):(\d{2}):\d{2}(?:\s|$)/))) return +m[1] * 60 + +m[2];
+            return null;
+        }
+
+        function buildOccupancy(list) {
+            const byDate = {};
+            let parsed = 0;
+            const unknown = [];
+            list.forEach(entry => {
+                const [rawDate = '', rawTime = ''] = String(entry ?? '').split('|');
+                if (!rawDate.trim() && !rawTime.trim()) return; // fila vacía en la planilla
+                const key = parseBookedDate(rawDate);
+                const minutes = parseBookedTime(rawTime);
+                if (key === null || minutes === null) { unknown.push(entry); return; }
+                (byDate[key] = byDate[key] || []).push(minutes);
+                parsed++;
+            });
+            if (unknown.length) console.warn('[Turnero] Turnos con formato no reconocido:', unknown);
+            return { byDate, parsed };
+        }
+
+        async function refreshAvailability(force = false) {
+            const fresh = availability.ok && Date.now() - availability.fetchedAt < AVAILABILITY_MAX_AGE_MS;
+            if (!force && fresh) return true;
+            if (availabilityRequest) return availabilityRequest;
+
+            availabilityRequest = (async () => {
+                const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+                const timer = controller ? setTimeout(() => controller.abort(), 20000) : null;
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL, { cache: 'no-store', signal: controller ? controller.signal : undefined });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    if (!Array.isArray(data)) throw new Error('Respuesta inesperada del servidor');
+
+                    const { byDate, parsed } = buildOccupancy(data);
+                    // Si hay turnos pero no se pudo leer ninguno, es más seguro no ofrecer
+                    // horarios que mostrar como libre algo que puede estar ocupado.
+                    if (data.length > 0 && parsed === 0) throw new Error('Formato de turnos no reconocido');
+
+                    // Lo reservado desde esta pestaña sigue bloqueado aunque la planilla tarde en reflejarlo.
+                    sessionBookings.forEach(b => (byDate[b.key] = byDate[b.key] || []).push(b.minutes));
+
+                    availability.byDate = byDate;
+                    availability.ok = true;
+                    availability.fetchedAt = Date.now();
+                    setAvailabilityWarning(false);
+                    return true;
+                } catch (error) {
+                    console.error('[Turnero] No se pudo obtener la disponibilidad:', error);
+                    availability.ok = false;
+                    setAvailabilityWarning(true);
+                    return false;
+                } finally {
+                    if (timer) clearTimeout(timer);
+                    availabilityRequest = null;
+                }
+            })();
+            return availabilityRequest;
+        }
+
+        function setAvailabilityWarning(visible) {
+            document.getElementById('availabilityWarning').classList.toggle('visible', visible);
+        }
+
+        // ================================================================
+        // REGLAS DE AGENDA
+        // ================================================================
+        function serviceOption() {
+            const select = document.getElementById('serviceSelect');
+            return select.options[select.selectedIndex];
+        }
+
+        const getServiceMinutes = () => Number(serviceOption().dataset.duration) || BOOKED_SLOT_MINUTES;
+
+        // Horarios de inicio que ofrece la agenda para esa fecha (sin mirar ocupación).
+        function getDayStarts(key) {
+            if (BLOCKED_DATES.includes(key)) return [];
+            const dow = dayOfWeek(key);
+            let slots = [];
+            if (HOLIDAYS.includes(key) || SCHEDULE.weekend.days.includes(dow)) slots = SCHEDULE.weekend.slots;
+            else if (SCHEDULE.weekday.days.includes(dow)) slots = SCHEDULE.weekday.slots;
+            return slots.map(slot => slot.split(' - ')[0].trim());
+        }
+
+        // ¿El servicio elegido, empezando a esa hora, se superpone con algún turno tomado?
+        function isSlotTaken(key, startMin, durationMin) {
+            return (availability.byDate[key] || []).some(booked =>
+                booked < startMin + durationMin && startMin < booked + BOOKED_SLOT_MINUTES
+            );
+        }
+
+        // Horarios realmente reservables: ni pasados, ni ocupados, ni superpuestos.
+        function getAvailableStarts(key) {
+            const now = studioNow();
+            if (key < now.key) return [];
+            const duration = getServiceMinutes();
+            return getDayStarts(key).filter(start => {
+                const startMin = toMinutes(start);
+                if (key === now.key && startMin <= now.minutes + MIN_NOTICE_MINUTES) return false;
+                return !isSlotTaken(key, startMin, duration);
+            });
+        }
+
+        const slotLabel = start => `${start} - ${fromMinutes(toMinutes(start) + getServiceMinutes())}`;
+
+        // ================================================================
+        // INTERFAZ
+        // ================================================================
         async function init() {
-            await fetchOccupiedSlots();
+            setupInputFilters();
             renderCalendar();
-            updateTotal();
+            updateSummary();
+            await refreshAvailability();
+            renderCalendar();
+            if (selectedDate) renderTimeSlots();
         }
 
         function toggleLangMenu() {
@@ -543,6 +796,7 @@
 
         function changeLanguage(lang) {
             currentLang = lang;
+            document.documentElement.lang = lang;
 
             const dropdown = document.getElementById('langDropdown');
             const trigger = document.getElementById('langTrigger');
@@ -553,158 +807,286 @@
 
             // Textos estáticos
             document.querySelectorAll('[data-i18n]').forEach(el => {
-                const keys = el.getAttribute('data-i18n').split('.');
-                let val = i18n[lang];
-                keys.forEach(k => val = val[k]);
-                if(val) el.innerHTML = val; // innerHTML para permitir negritas
+                const val = t(el.getAttribute('data-i18n'));
+                if (typeof val === 'string') el.innerHTML = val; // innerHTML para permitir negritas
             });
 
-            // Re-render calendario para nombres de meses/dias
+            // Re-render calendario y horarios para nombres de meses/días y mensajes
             renderCalendar();
-            if(selectedDate) renderTimeSlots(selectedDate.dateObj.getDay());
-        }
-
-        async function fetchOccupiedSlots() {
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
-                const data = await response.json();
-                occupiedSlots = data;
-            } catch (error) {
-                occupiedSlots = [];
-                document.getElementById('availabilityWarning').classList.add('visible');
-            }
+            if (selectedDate) renderTimeSlots();
         }
 
         function renderCalendar() {
             const calendar = document.getElementById('calendar');
             const monthLabel = document.getElementById('calendarMonth');
-            
-            // Nombres localizados
-            const monthName = new Intl.DateTimeFormat(currentLang, { month: 'long' }).format(currentDate);
-            monthLabel.textContent = `${monthName} ${currentDate.getFullYear()}`;
-            
+            const monthName = new Intl.DateTimeFormat(currentLang, { month: 'long', timeZone: 'UTC' }).format(new Date(Date.UTC(viewYear, viewMonth, 1)));
+            monthLabel.textContent = `${monthName} ${viewYear}`;
+
             calendar.innerHTML = '';
 
-            const daysHeader = [];
-            for(let i=0; i<7; i++) {
-                // Truco para obtener dias de la semana localizados (domingo base)
-                const d = new Date(2023, 0, 1 + i); 
-                daysHeader.push(new Intl.DateTimeFormat(currentLang, { weekday: 'short' }).format(d));
+            for (let i = 0; i < 7; i++) {
+                // Truco para obtener días de la semana localizados (domingo base)
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = new Intl.DateTimeFormat(currentLang, { weekday: 'short', timeZone: 'UTC' }).format(new Date(Date.UTC(2023, 0, 1 + i)));
+                calendar.appendChild(header);
             }
-            daysHeader.forEach(d => calendar.innerHTML += `<div class="calendar-day-header">${d}</div>`);
 
-            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
-            const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+            const firstDow = dayOfWeek(toKey(viewYear, viewMonth + 1, 1));
+            const daysInMonth = new Date(Date.UTC(viewYear, viewMonth + 1, 0)).getUTCDate();
+            for (let i = 0; i < firstDow; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'calendar-day disabled';
+                empty.setAttribute('aria-hidden', 'true');
+                calendar.appendChild(empty);
+            }
 
-            for(let i=0; i<firstDay; i++) calendar.innerHTML += `<div class="calendar-day disabled"></div>`;
+            const now = studioNow();
+            const dateFmt = new Intl.DateTimeFormat(currentLang, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
 
-            const today = new Date();
-            today.setHours(0,0,0,0);
+            for (let day = 1; day <= daysInMonth; day++) {
+                const key = toKey(viewYear, viewMonth + 1, day);
+                const isPast = key < now.key;
+                const isWorkDay = getDayStarts(key).length > 0;
+                // Día completo: todos sus horarios están tomados (o ya pasaron)
+                const isFull = !isPast && isWorkDay && availability.ok && getAvailableStarts(key).length === 0;
+                const enabled = isWorkDay && !isPast && !isFull;
+                const isSelected = !!selectedDate && selectedDate.key === key;
 
-            for(let day=1; day<=daysInMonth; day++) {
-                const dateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-                const dayOfWeek = dateObj.getDay();
-                
-                // Formato YYYY-MM-DD para chequear feriados
-                const dateString = dateObj.toISOString().split('T')[0];
-                const isHoliday = HOLIDAYS_2026.includes(dateString);
-
-                // Días habilitados: Mié(3), Vie(5), Sáb(6), Dom(0), y feriados.
-                const isWorkDay = [0, 3, 5, 6].includes(dayOfWeek) || isHoliday;
-                const isPast = dateObj < today;
-
-                const el = document.createElement('div');
-                const isSelected = selectedDate && selectedDate.day === day && selectedDate.month === currentDate.getMonth();
-                el.className = `calendar-day ${(!isWorkDay || isPast) ? 'disabled' : ''} ${isSelected ? 'selected' : ''}`;
+                const el = document.createElement('button');
+                el.type = 'button';
+                el.className = ['calendar-day', enabled ? '' : 'disabled', isFull ? 'full' : '', isSelected ? 'selected' : '', key === now.key ? 'today' : ''].join(' ').replace(/\s+/g, ' ').trim();
                 el.textContent = day;
-                el.setAttribute('role', 'button');
-                el.setAttribute('aria-label', `${day} de ${new Intl.DateTimeFormat(currentLang, { month: 'long' }).format(currentDate)}${!isWorkDay ? ' (no disponible)' : isPast ? ' (pasado)' : ''}`);
-                el.setAttribute('aria-disabled', (!isWorkDay || isPast) ? 'true' : 'false');
+                const status = isPast ? t('slots.past') : !isWorkDay ? t('slots.unavailable') : isFull ? t('slots.full') : '';
+                const label = dateFmt.format(new Date(Date.UTC(viewYear, viewMonth, day)));
+                el.setAttribute('aria-label', status ? `${label} (${status})` : label);
+                if (status) el.title = status;
                 el.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
 
-                if (isWorkDay && !isPast) {
-                    el.onclick = () => selectDate(day, dateObj);
-                }
+                if (enabled) el.addEventListener('click', () => selectDate(key));
+                else el.disabled = true;
                 calendar.appendChild(el);
             }
         }
 
         function changeMonth(delta) {
-            currentDate.setMonth(currentDate.getMonth() + delta);
+            const now = studioNow();
+            const minYear = Number(now.key.slice(0, 4));
+            const minMonth = Number(now.key.slice(5, 7)) - 1;
+            let y = viewYear, m = viewMonth + delta;
+            if (m < 0) { m = 11; y--; }
+            if (m > 11) { m = 0; y++; }
+            if (y < minYear || (y === minYear && m < minMonth)) return; // no navegar a meses pasados
+            viewYear = y;
+            viewMonth = m;
             renderCalendar();
         }
 
-        function selectDate(day, dateObj) {
-            selectedDate = { day, month: currentDate.getMonth(), year: currentDate.getFullYear(), dateObj };
+        async function selectDate(key) {
+            const [y, m, d] = key.split('-').map(Number);
+            selectedDate = { key, year: y, month: m - 1, day: d };
             selectedTime = null;
-            renderCalendar();
-            renderTimeSlots(dateObj.getDay());
-            
+            hideAlert('slotAlert');
+            setFormActive(false);
+            updateSummary();
             document.getElementById('step1').classList.add('active');
             document.getElementById('step2').classList.add('active');
-            document.getElementById('formSection').classList.remove('active');
+            document.getElementById('step3').classList.remove('active');
+            renderCalendar();
+
+            // Como en la barbería: al elegir un día se consulta la disponibilidad actualizada.
+            const fresh = availability.ok && Date.now() - availability.fetchedAt < AVAILABILITY_MAX_AGE_MS;
+            if (!fresh) showSlotsHint(t('slots.loading'));
+            await refreshAvailability();
+            if (!selectedDate || selectedDate.key !== key) return; // cambió de día mientras cargaba
+            renderCalendar();
+            renderTimeSlots();
         }
 
-        function renderTimeSlots(dayOfWeek) {
+        function showSlotsHint(text) {
             const container = document.getElementById('timeSlots');
             container.innerHTML = '';
-            let slots = [];
+            const hint = document.createElement('div');
+            hint.className = 'slots-hint';
+            hint.textContent = text;
+            container.appendChild(hint);
+            return hint;
+        }
 
-            const dateString = selectedDate.dateObj.toISOString().split('T')[0];
-            const isHoliday = HOLIDAYS_2026.includes(dateString);
+        function renderTimeSlots() {
+            const container = document.getElementById('timeSlots');
+            if (!selectedDate) { showSlotsHint(t('selectDateFirst')); return; }
 
-            if (isHoliday || [0, 6].includes(dayOfWeek)) {
-                slots = ['07:00 - 08:30', '08:30 - 10:00', '10:00 - 11:30', '11:30 - 13:00'];
-            } else if ([3, 5].includes(dayOfWeek)) {
-                slots = ['19:00 - 20:30', '20:30 - 22:00'];
+            if (!availability.ok) {
+                // Sin disponibilidad confirmada no se ofrecen horarios (evita reservas duplicadas).
+                const hint = showSlotsHint(t('slots.error'));
+                const retry = document.createElement('button');
+                retry.type = 'button';
+                retry.className = 'btn-retry';
+                retry.textContent = t('slots.retry');
+                retry.addEventListener('click', retryAvailability);
+                const wa = document.createElement('a');
+                wa.href = `https://wa.me/${WA_NUMBER}`;
+                wa.target = '_blank';
+                wa.rel = 'noopener';
+                wa.textContent = t('slots.orWhatsapp');
+                hint.append(document.createElement('br'), retry, document.createElement('br'), wa);
+                return;
             }
 
-            const formattedDate = `${selectedDate.day}/${selectedDate.month + 1}/${selectedDate.year}`;
+            const starts = getAvailableStarts(selectedDate.key);
+            if (starts.length === 0) { showSlotsHint(t('slots.none')); return; }
 
-            slots.forEach(slot => {
-                const startTime = slot.split(' - ')[0];
-                const isTaken = occupiedSlots.includes(`${formattedDate}|${startTime}`);
-                
-                const div = document.createElement('div');
-                div.className = `time-slot ${isTaken ? 'disabled' : ''}`;
-                div.textContent = isTaken ? `${slot} (Ocupado)` : slot;
-                
-                if (!isTaken) div.onclick = () => selectTime(div, slot);
-                container.appendChild(div);
+            // Como en la barbería: los horarios tomados directamente no se muestran.
+            container.innerHTML = '';
+            starts.forEach(start => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'time-slot' + (selectedTime === start ? ' selected' : '');
+                btn.textContent = slotLabel(start);
+                btn.setAttribute('aria-pressed', selectedTime === start ? 'true' : 'false');
+                btn.addEventListener('click', () => selectTime(start));
+                container.appendChild(btn);
             });
         }
 
-        function selectTime(el, slot) {
-            document.querySelectorAll('.time-slot').forEach(d => d.classList.remove('selected'));
-            el.classList.add('selected');
-            selectedTime = slot;
-            
-            document.getElementById('step3').classList.add('active');
-            updateSummary();
-            
-            const form = document.getElementById('formSection');
-            form.classList.add('active');
-            form.scrollIntoView({ behavior: 'smooth' });
+        async function retryAvailability() {
+            showSlotsHint(t('slots.loading'));
+            await refreshAvailability(true);
+            renderCalendar();
+            renderTimeSlots();
         }
 
-        function updateTotal() {
+        function selectTime(start) {
+            selectedTime = start;
+            hideAlert('slotAlert');
+            renderTimeSlots();
+            document.getElementById('step3').classList.add('active');
             updateSummary();
+            setFormActive(true);
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // El turno elegido dejó de estar disponible: se limpia y se vuelve al paso 2.
+        function clearSelectedTime(alertKey) {
+            selectedTime = null;
+            setFormActive(false);
+            document.getElementById('step3').classList.remove('active');
+            updateSummary();
+            if (alertKey) showAlert('slotAlert', t(`alerts.${alertKey}`));
+        }
+
+        // Vuelve a validar el turno elegido contra la disponibilidad actual.
+        function revalidateSelection(alertKey) {
+            renderCalendar();
+            if (!selectedDate) return;
+            if (selectedTime && availability.ok && !getAvailableStarts(selectedDate.key).includes(selectedTime)) {
+                clearSelectedTime(alertKey);
+            }
+            renderTimeSlots();
+        }
+
+        function onServiceChange() {
+            updateSummary();
+            // La duración del servicio cambia qué horarios entran en la agenda.
+            revalidateSelection('tooLong');
+        }
+
+        // Al volver a la pestaña (ej.: el cliente fue a buscar sus datos), se refresca la disponibilidad.
+        document.addEventListener('visibilitychange', async () => {
+            if (document.visibilityState !== 'visible') return;
+            if (document.getElementById('confirmationView').classList.contains('active')) return;
+            await refreshAvailability();
+            revalidateSelection('taken');
+        });
+
+        function setFormActive(active) {
+            document.getElementById('formSection').classList.toggle('active', active);
+        }
+
+        function showAlert(id, text) {
+            document.getElementById(`${id}Text`).textContent = text;
+            document.getElementById(id).classList.add('visible');
+        }
+
+        function hideAlert(id) {
+            document.getElementById(id).classList.remove('visible');
         }
 
         function updateSummary() {
-            const select = document.getElementById('serviceSelect');
-            const name = select.options[select.selectedIndex].dataset.name;
-            const price = select.options[select.selectedIndex].dataset.price;
-            const deposit = price / 2;
+            const option = serviceOption();
+            const deposit = Number(option.dataset.price) / 2;
 
-            document.getElementById('summaryService').textContent = name;
+            document.getElementById('summaryService').textContent = option.dataset.name;
             document.getElementById('summaryTotal').textContent = `$${deposit.toLocaleString('es-AR')}`;
-            
-            if (selectedDate && selectedTime) {
-                document.getElementById('summaryDateTime').textContent = `${selectedDate.day}/${selectedDate.month+1} - ${selectedTime}`;
-            }
+            document.getElementById('summaryDateTime').textContent = (selectedDate && selectedTime)
+                ? `${selectedDate.day}/${selectedDate.month + 1} - ${slotLabel(selectedTime)}`
+                : '-';
         }
 
+        // ================================================================
+        // VALIDACIÓN DEL FORMULARIO
+        // ================================================================
+        const NAME_RE = /^[\p{L}][\p{L}\p{M}'’. -]*$/u;
+
+        function setupInputFilters() {
+            // Teléfono: solo dígitos, espacios, guiones, paréntesis y +
+            document.getElementById('phone').addEventListener('input', e => {
+                e.target.value = e.target.value.replace(/[^\d\s\-+()]/g, '');
+            });
+            ['firstName', 'lastName', 'email', 'phone'].forEach(id => {
+                document.getElementById(id).addEventListener('input', () => clearFieldError(id));
+            });
+            document.getElementById('policyCheck').addEventListener('change', () => hideAlert('formAlert'));
+        }
+
+        function markFieldError(id, message) {
+            const input = document.getElementById(id);
+            input.classList.add('input-error');
+            input.setAttribute('aria-invalid', 'true');
+            const span = document.createElement('span');
+            span.className = 'field-error';
+            span.id = `${id}Error`;
+            span.textContent = message;
+            input.setAttribute('aria-describedby', span.id);
+            input.parentNode.appendChild(span);
+        }
+
+        function clearFieldError(id) {
+            const input = document.getElementById(id);
+            input.classList.remove('input-error');
+            input.removeAttribute('aria-invalid');
+            input.removeAttribute('aria-describedby');
+            document.getElementById(`${id}Error`)?.remove();
+        }
+
+        function validateForm() {
+            ['firstName', 'lastName', 'email', 'phone'].forEach(clearFieldError);
+            const value = id => document.getElementById(id).value.trim();
+            const phoneDigits = value('phone').replace(/\D/g, '');
+            const checks = [
+                ['firstName', NAME_RE.test(value('firstName')), 'errors.name'],
+                ['lastName', NAME_RE.test(value('lastName')), 'errors.lastname'],
+                ['email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value('email')), 'errors.email'],
+                ['phone', phoneDigits.length >= 8 && phoneDigits.length <= 15, 'errors.phone']
+            ];
+            let firstInvalid = null;
+            checks.forEach(([id, ok, msg]) => {
+                if (ok) return;
+                markFieldError(id, t(msg));
+                firstInvalid = firstInvalid || id;
+            });
+            if (!document.getElementById('policyCheck').checked) {
+                showAlert('formAlert', t('errors.policy'));
+                firstInvalid = firstInvalid || 'policyCheck';
+            }
+            if (firstInvalid) document.getElementById(firstInvalid).focus();
+            return !firstInvalid;
+        }
+
+        // ================================================================
+        // CONFIRMACIÓN
+        // ================================================================
         function copyAlias() {
             navigator.clipboard.writeText(ALIAS_MP).then(() => {
                 const btn = document.querySelector('.btn-copy');
@@ -713,45 +1095,44 @@
             });
         }
 
-        function generateCalendarLinks(serviceName, dateObj, timeStr) {
-            // Parsear hora inicio
-            const [startStr, endStr] = timeStr.split(' - ');
-            const [startH, startM] = startStr.split(':').map(Number);
-            const [endH, endM] = endStr.split(':').map(Number);
+        function generateCalendarLinks(serviceName, key, start, durationMin) {
+            // Hora de Buenos Aires, sin importar la zona horaria del dispositivo
+            const startDate = new Date(`${key}T${start}:00${STUDIO_UTC_OFFSET}`);
+            const endDate = new Date(startDate.getTime() + durationMin * 60000);
 
-            const start = new Date(dateObj);
-            start.setHours(startH, startM, 0);
-            const end = new Date(dateObj);
-            end.setHours(endH, endM, 0);
-
-            // Formato para Google: YYYYMMDDTHHMMSS
+            // Formato para Google / ICS: YYYYMMDDTHHMMSSZ
             const fmt = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
-            
-            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Próximamente en Parque Patricios')}`;
-            
+
+            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(startDate)}/${fmt(endDate)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Próximamente en Parque Patricios')}`;
+
             // ICS Generation
-            const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-URL:${document.URL}
-DTSTART:${fmt(start)}
-DTEND:${fmt(end)}
-SUMMARY:Turno Bell Studio: ${serviceName}
-DESCRIPTION:Recordá la tolerancia de 15 min.
-LOCATION:Próximamente en Parque Patricios
-END:VEVENT
-END:VCALENDAR`;
-            
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Bell Studio//Turnero//ES',
+                'BEGIN:VEVENT',
+                `UID:${fmt(startDate)}-${Math.random().toString(36).slice(2)}@bellstudio.com.ar`,
+                `DTSTAMP:${fmt(new Date())}`,
+                `URL:${document.URL}`,
+                `DTSTART:${fmt(startDate)}`,
+                `DTEND:${fmt(endDate)}`,
+                `SUMMARY:Turno Bell Studio: ${serviceName}`,
+                'DESCRIPTION:Recordá la tolerancia de 15 min.',
+                'LOCATION:Próximamente en Parque Patricios',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
             const icsUrl = URL.createObjectURL(blob);
 
             const container = document.getElementById('calendarActions');
             container.innerHTML = `
                 <a href="${gUrl}" target="_blank" class="btn-calendar">
-                    <i class="fab fa-google"></i> ${i18n[currentLang].calendar.google}
+                    <i class="fab fa-google"></i> ${t('calendar.google')}
                 </a>
                 <a href="${icsUrl}" download="turno-bellstudio.ics" class="btn-calendar">
-                    <i class="fab fa-apple"></i> ${i18n[currentLang].calendar.apple}
+                    <i class="fab fa-apple"></i> ${t('calendar.apple')}
                 </a>
             `;
         }
@@ -759,39 +1140,56 @@ END:VCALENDAR`;
         // --- MANEJO DEL SUBMIT ---
         document.getElementById('bookingForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // Checkbox Policy Validation (HTML5 'required' handles it visually, but extra check)
-            if(!document.getElementById('policyCheck').checked) return;
+            hideAlert('formAlert');
+            if (!selectedDate || !selectedTime) return;
+            if (!validateForm()) return;
 
             // UI Loading
-            document.getElementById('loadingOverlay').classList.add('active');
+            const overlay = document.getElementById('loadingOverlay');
             const btn = document.getElementById('submitBtn');
+            overlay.classList.add('active');
             btn.disabled = true;
+            const stopLoading = () => { overlay.classList.remove('active'); btn.disabled = false; };
 
-            // Datos
-            const select = document.getElementById('serviceSelect');
-            const serviceName = select.options[select.selectedIndex].dataset.name;
-            const price = select.options[select.selectedIndex].dataset.price;
-            const deposit = parseInt(price) / 2;
+            // 1. Como en la barbería: justo antes de reservar se vuelve a chequear que el turno siga libre
+            const verified = await refreshAvailability(true);
+            if (!verified) {
+                stopLoading();
+                showAlert('formAlert', t('alerts.verify'));
+                return;
+            }
+            if (!getAvailableStarts(selectedDate.key).includes(selectedTime)) {
+                stopLoading();
+                revalidateSelection('taken');
+                document.getElementById('timeSlots').closest('.section-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Datos (mismo formato que espera el Apps Script)
+            const option = serviceOption();
+            const serviceName = option.dataset.name;
+            const deposit = parseInt(option.dataset.price) / 2;
             const depositStr = deposit.toLocaleString('es-AR');
             const dateStr = `${selectedDate.day}/${selectedDate.month + 1}/${selectedDate.year}`;
-            const startTime = selectedTime.split(' - ')[0];
+            const startTime = selectedTime;
+            const timeLabel = slotLabel(startTime);
+            const booking = { key: selectedDate.key, minutes: toMinutes(startTime) };
 
             const formData = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
                 firstTime: document.getElementById('firstTime').value,
-                comments: document.getElementById('comments').value,
+                comments: document.getElementById('comments').value.trim(),
                 date: dateStr,
                 time: startTime,
-                service: select.value,
+                service: option.value,
                 lang: currentLang // Send lang to backend just in case
             };
 
             try {
-                // 1. Enviar a Google Sheets
+                // 2. Enviar a Google Sheets (el Apps Script registra y manda los emails)
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -799,28 +1197,31 @@ END:VCALENDAR`;
                     headers: { 'Content-Type': 'application/json' }
                 });
 
-                // 2. Preparar Pantalla de Éxito
-                document.getElementById('confirmAmount').textContent = `$${depositStr}`;
-                
-                // Generar links calendario
-                generateCalendarLinks(serviceName, selectedDate.dateObj, selectedTime);
+                // El turno queda bloqueado en esta pestaña de inmediato
+                sessionBookings.push(booking);
+                (availability.byDate[booking.key] = availability.byDate[booking.key] || []).push(booking.minutes);
 
-                // 3. Generar Link de WhatsApp
-                const msg = `Hola, soy ${formData.firstName}. Te envío el comprobante de $${depositStr} para confirmar mi turno de ${serviceName} el día ${dateStr} a las ${selectedTime}.`;
+                // 3. Preparar Pantalla de Éxito
+                document.getElementById('confirmAmount').textContent = `$${depositStr}`;
+
+                // Generar links calendario
+                generateCalendarLinks(serviceName, booking.key, startTime, getServiceMinutes());
+
+                // 4. Generar Link de WhatsApp
+                const msg = `Hola, soy ${formData.firstName}. Te envío el comprobante de $${depositStr} para confirmar mi turno de ${serviceName} el día ${dateStr} a las ${timeLabel}.`;
                 const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
                 document.getElementById('waLink').href = waLink;
 
-                // 4. Cambiar Vistas
-                document.getElementById('loadingOverlay').classList.remove('active');
+                // 5. Cambiar Vistas
+                overlay.classList.remove('active');
                 document.getElementById('bookingView').style.display = 'none';
                 document.getElementById('confirmationView').classList.add('active');
                 window.scrollTo(0, 0);
 
             } catch (error) {
                 console.error(error);
-                alert('Hubo un error de conexión. Por favor contactanos por WhatsApp.');
-                document.getElementById('loadingOverlay').classList.remove('active');
-                btn.disabled = false;
+                stopLoading();
+                showAlert('formAlert', t('alerts.connection'));
             }
         });
 
