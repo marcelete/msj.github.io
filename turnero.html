@@ -20,8 +20,11 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bellstudio.com.ar/turnero.html">
     <link rel="canonical" href="https://bellstudio.com.ar/turnero.html">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <!-- GitHub Pages no permite headers HTTP propios: la CSP se define por meta. Limita a qué dominios puede conectarse o cargar recursos la página. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https://flagcdn.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous" referrerpolicy="no-referrer">
     
     <style>
         /* --- ESTILOS GENERALES Y TIPOGRAFÍA --- */
@@ -355,11 +358,13 @@
             <div class="form-section" id="formSection">
                 <h3 style="margin-bottom: 20px;" data-i18n="step3Header">3. Completar Datos</h3>
                 <form id="bookingForm" novalidate>
+                    <!-- Trampa para bots: una persona no ve ni completa este campo -->
+                    <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>No completar este campo<input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
                     <div class="form-grid">
-                        <div class="form-group"><label for="firstName" data-i18n="form.name">Nombre</label><input type="text" id="firstName" autocomplete="given-name" required></div>
-                        <div class="form-group"><label for="lastName" data-i18n="form.lastname">Apellido</label><input type="text" id="lastName" autocomplete="family-name" required></div>
-                        <div class="form-group"><label for="email" data-i18n="form.email">Email</label><input type="email" id="email" autocomplete="email" required></div>
-                        <div class="form-group"><label for="phone" data-i18n="form.phone">Teléfono (WhatsApp)</label><input type="tel" id="phone" autocomplete="tel" placeholder="+54 9..." required></div>
+                        <div class="form-group"><label for="firstName" data-i18n="form.name">Nombre</label><input type="text" id="firstName" autocomplete="given-name" maxlength="50" required></div>
+                        <div class="form-group"><label for="lastName" data-i18n="form.lastname">Apellido</label><input type="text" id="lastName" autocomplete="family-name" maxlength="50" required></div>
+                        <div class="form-group"><label for="email" data-i18n="form.email">Email</label><input type="email" id="email" autocomplete="email" maxlength="100" required></div>
+                        <div class="form-group"><label for="phone" data-i18n="form.phone">Teléfono (WhatsApp)</label><input type="tel" id="phone" autocomplete="tel" maxlength="25" placeholder="+54 9..." required></div>
                         <div class="form-group full-width">
                             <label data-i18n="form.known">¿Ya nos conocemos?</label>
                             <select id="firstTime">
@@ -367,7 +372,7 @@
                                 <option value="no" data-i18n="form.regular">No, ya conozco el estudio</option>
                             </select>
                         </div>
-                        <div class="form-group full-width"><label data-i18n="form.comments">Contame de vos. ¿Qué querés mejorar?</label><textarea id="comments" rows="3"></textarea></div>
+                        <div class="form-group full-width"><label data-i18n="form.comments">Contame de vos. ¿Qué querés mejorar?</label><textarea id="comments" rows="3" maxlength="500"></textarea></div>
                         
                         <!-- POLICY CHECKBOX -->
                         <div class="policy-group">
@@ -446,7 +451,7 @@
                     </ol>
                 </div>
 
-                <a href="#" id="waLink" target="_blank" class="whatsapp-btn">
+                <a href="#" id="waLink" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> <span data-i18n="btn.whatsapp">Enviar Comprobante</span>
                 </a>
                 
@@ -529,7 +534,7 @@
                 final: { steps: "Pasos finales:", step1: "Transferí el monto indicado al alias.", step2: "Enviame el comprobante por WhatsApp.", step3: "¡Listo! Tu turno queda asegurado." },
                 warning: "No pudimos consultar la disponibilidad en este momento. Probá de nuevo en unos minutos o consultá por WhatsApp.",
                 slots: { loading: "Cargando horarios disponibles...", none: "No quedan horarios disponibles para este día. Elegí otra fecha.", error: "No pudimos cargar la disponibilidad.", retry: "Reintentar", orWhatsapp: "o consultá por WhatsApp", full: "sin turnos disponibles", unavailable: "no disponible", past: "pasado" },
-                alerts: { taken: "Ese horario ya no está disponible: acaba de reservarlo otra persona. Elegí otro, por favor.", tooLong: "El horario que habías elegido no alcanza para la duración de este servicio. Elegí otro, por favor.", verify: "No pudimos verificar que el horario siga libre. Revisá tu conexión e intentá de nuevo, o escribime por WhatsApp.", connection: "Hubo un error de conexión. Intentá de nuevo o contactanos por WhatsApp." },
+                alerts: { limit: "Detectamos demasiadas solicitudes. Por favor escribinos por WhatsApp para reservar tu turno.", taken: "Ese horario ya no está disponible: acaba de reservarlo otra persona. Elegí otro, por favor.", tooLong: "El horario que habías elegido no alcanza para la duración de este servicio. Elegí otro, por favor.", verify: "No pudimos verificar que el horario siga libre. Revisá tu conexión e intentá de nuevo, o escribime por WhatsApp.", connection: "Hubo un error de conexión. Intentá de nuevo o contactanos por WhatsApp." },
                 errors: { name: "Ingresá tu nombre (solo letras).", lastname: "Ingresá tu apellido (solo letras).", email: "Ingresá un email válido.", phone: "Ingresá un teléfono válido, con código de área.", policy: "Para continuar tenés que aceptar la política de turnos." }
             },
             en: {
@@ -545,7 +550,7 @@
                 final: { steps: "Final steps:", step1: "Transfer the amount to the alias.", step2: "Send me the receipt via WhatsApp.", step3: "Done! Your spot is secured." },
                 warning: "We couldn't check availability right now. Please try again in a few minutes or ask via WhatsApp.",
                 slots: { loading: "Loading available times...", none: "No times left for this day. Please pick another date.", error: "We couldn't load availability.", retry: "Try again", orWhatsapp: "or ask via WhatsApp", full: "fully booked", unavailable: "unavailable", past: "past" },
-                alerts: { taken: "That time is no longer available: someone else just booked it. Please choose another one.", tooLong: "The time you picked doesn't fit this service's duration. Please choose another one.", verify: "We couldn't confirm the time is still free. Check your connection and try again, or message me on WhatsApp.", connection: "Connection error. Please try again or contact us via WhatsApp." },
+                alerts: { limit: "We detected too many requests. Please message us on WhatsApp to book your appointment.", taken: "That time is no longer available: someone else just booked it. Please choose another one.", tooLong: "The time you picked doesn't fit this service's duration. Please choose another one.", verify: "We couldn't confirm the time is still free. Check your connection and try again, or message me on WhatsApp.", connection: "Connection error. Please try again or contact us via WhatsApp." },
                 errors: { name: "Enter your first name (letters only).", lastname: "Enter your last name (letters only).", email: "Enter a valid email.", phone: "Enter a valid phone number, including area code.", policy: "Please accept the booking policy to continue." }
             },
             pt: {
@@ -561,7 +566,7 @@
                 final: { steps: "Passos finais:", step1: "Transfira o valor indicado.", step2: "Envie o comprovante por WhatsApp.", step3: "Pronto! Seu turno está garantido." },
                 warning: "Não conseguimos consultar a disponibilidade agora. Tente novamente em alguns minutos ou fale pelo WhatsApp.",
                 slots: { loading: "Carregando horários disponíveis...", none: "Não há mais horários disponíveis neste dia. Escolha outra data.", error: "Não conseguimos carregar a disponibilidade.", retry: "Tentar novamente", orWhatsapp: "ou fale pelo WhatsApp", full: "sem horários disponíveis", unavailable: "indisponível", past: "passado" },
-                alerts: { taken: "Esse horário não está mais disponível: outra pessoa acabou de reservá-lo. Por favor, escolha outro.", tooLong: "O horário escolhido não comporta a duração deste serviço. Por favor, escolha outro.", verify: "Não conseguimos verificar se o horário continua livre. Verifique sua conexão e tente novamente, ou me escreva pelo WhatsApp.", connection: "Erro de conexão. Tente novamente ou fale conosco pelo WhatsApp." },
+                alerts: { limit: "Detectamos muitas solicitações. Por favor, fale conosco pelo WhatsApp para reservar seu horário.", taken: "Esse horário não está mais disponível: outra pessoa acabou de reservá-lo. Por favor, escolha outro.", tooLong: "O horário escolhido não comporta a duração deste serviço. Por favor, escolha outro.", verify: "Não conseguimos verificar se o horário continua livre. Verifique sua conexão e tente novamente, ou me escreva pelo WhatsApp.", connection: "Erro de conexão. Tente novamente ou fale conosco pelo WhatsApp." },
                 errors: { name: "Informe seu nome (apenas letras).", lastname: "Informe seu sobrenome (apenas letras).", email: "Informe um email válido.", phone: "Informe um telefone válido, com DDD.", policy: "Para continuar, aceite a política de horários." }
             },
             it: {
@@ -577,7 +582,7 @@
                 final: { steps: "Passaggi finali:", step1: "Trasferisci l'importo indicato.", step2: "Inviami la ricevuta via WhatsApp.", step3: "Fatto! Il tuo posto è assicurato." },
                 warning: "Non siamo riusciti a verificare la disponibilità in questo momento. Riprova tra qualche minuto o scrivici su WhatsApp.",
                 slots: { loading: "Caricamento degli orari disponibili...", none: "Non ci sono più orari disponibili per questo giorno. Scegli un'altra data.", error: "Non siamo riusciti a caricare la disponibilità.", retry: "Riprova", orWhatsapp: "oppure scrivici su WhatsApp", full: "completo", unavailable: "non disponibile", past: "passato" },
-                alerts: { taken: "Questo orario non è più disponibile: un'altra persona l'ha appena prenotato. Scegline un altro.", tooLong: "L'orario scelto non è sufficiente per la durata di questo servizio. Scegline un altro.", verify: "Non siamo riusciti a verificare che l'orario sia ancora libero. Controlla la connessione e riprova, oppure scrivimi su WhatsApp.", connection: "Errore di connessione. Riprova o contattaci su WhatsApp." },
+                alerts: { limit: "Abbiamo rilevato troppe richieste. Scrivici su WhatsApp per prenotare il tuo appuntamento.", taken: "Questo orario non è più disponibile: un'altra persona l'ha appena prenotato. Scegline un altro.", tooLong: "L'orario scelto non è sufficiente per la durata di questo servizio. Scegline un altro.", verify: "Non siamo riusciti a verificare che l'orario sia ancora libero. Controlla la connessione e riprova, oppure scrivimi su WhatsApp.", connection: "Errore di connessione. Riprova o contattaci su WhatsApp." },
                 errors: { name: "Inserisci il tuo nome (solo lettere).", lastname: "Inserisci il tuo cognome (solo lettere).", email: "Inserisci un'email valida.", phone: "Inserisci un numero di telefono valido, con prefisso.", policy: "Per continuare devi accettare la politica degli appuntamenti." }
             }
         };
@@ -626,6 +631,22 @@
         // Turnos tomados por fecha: { 'AAAA-MM-DD': [minutos de inicio, ...] }
         const availability = { ok: false, fetchedAt: 0, byDate: {} };
         const sessionBookings = []; // reservas hechas desde esta pestaña
+
+        // Protección básica contra abuso (el control real está en el Apps Script):
+        // máximo de reservas por navegador en 24 h y tiempo mínimo para completar el formulario.
+        const MAX_BOOKINGS_PER_DAY = 2;
+        const MIN_FILL_SECONDS = 5;
+        const pageLoadedAt = Date.now();
+        const RATE_KEY = 'bs_bookings';
+        function recentBookings() {
+            try {
+                const list = JSON.parse(localStorage.getItem(RATE_KEY) || '[]');
+                return list.filter(ts => Date.now() - ts < 24 * 3600 * 1000);
+            } catch (_) { return []; }
+        }
+        function rememberBooking() {
+            try { localStorage.setItem(RATE_KEY, JSON.stringify([...recentBookings(), Date.now()])); } catch (_) {}
+        }
         let availabilityRequest = null;
 
         function t(path) {
@@ -1128,7 +1149,7 @@
 
             const container = document.getElementById('calendarActions');
             container.innerHTML = `
-                <a href="${gUrl}" target="_blank" class="btn-calendar">
+                <a href="${gUrl}" target="_blank" rel="noopener noreferrer" class="btn-calendar">
                     <i class="fab fa-google"></i> ${t('calendar.google')}
                 </a>
                 <a href="${icsUrl}" download="turno-bellstudio.ics" class="btn-calendar">
@@ -1143,6 +1164,21 @@
             hideAlert('formAlert');
             if (!selectedDate || !selectedTime) return;
             if (!validateForm()) return;
+
+            // Bots: el campo trampa está lleno o el formulario se completó imposiblemente rápido.
+            // Se simula éxito sin enviar nada, para no darle pistas al bot.
+            const looksLikeBot = document.getElementById('website').value !== ''
+                || (Date.now() - pageLoadedAt) / 1000 < MIN_FILL_SECONDS;
+            if (looksLikeBot) {
+                document.getElementById('bookingView').style.display = 'none';
+                document.getElementById('confirmationView').classList.add('active');
+                window.scrollTo(0, 0);
+                return;
+            }
+            if (recentBookings().length >= MAX_BOOKINGS_PER_DAY) {
+                showAlert('formAlert', t('alerts.limit'));
+                return;
+            }
 
             // UI Loading
             const overlay = document.getElementById('loadingOverlay');
@@ -1185,17 +1221,38 @@
                 date: dateStr,
                 time: startTime,
                 service: option.value,
-                lang: currentLang // Send lang to backend just in case
+                lang: currentLang, // Send lang to backend just in case
+                website: '', // campo trampa (el servidor rechaza si llega con contenido)
+                elapsed: Math.round((Date.now() - pageLoadedAt) / 1000) // segundos que tardó en completar
             };
 
             try {
                 // 2. Enviar a Google Sheets (el Apps Script registra y manda los emails)
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(formData),
-                    headers: { 'Content-Type': 'application/json' }
-                });
+                // Sin 'no-cors' y sin header Content-Type: viaja como texto plano (el Apps Script
+                // recibe lo mismo en e.postData.contents) y se puede leer la respuesta.
+                let result = null;
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
+                    try { result = await response.json(); } catch (_) { /* script viejo o sin JSON: se toma como OK */ }
+                } catch (netError) {
+                    // No se pudo leer la respuesta (red o CORS). La reserva puede haberse registrado igual:
+                    // se consulta la planilla antes de avisar de un error.
+                    await refreshAvailability(true);
+                    if (!isSlotTaken(booking.key, booking.minutes, 1)) throw netError;
+                }
+
+                if (result && result.ok === false) {
+                    stopLoading();
+                    if (result.reason === 'taken') {
+                        await refreshAvailability(true);
+                        revalidateSelection('taken');
+                        document.getElementById('timeSlots').closest('.section-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        showAlert('formAlert', t('alerts.limit'));
+                    }
+                    return;
+                }
+                rememberBooking();
 
                 // El turno queda bloqueado en esta pestaña de inmediato
                 sessionBookings.push(booking);
