@@ -1124,7 +1124,7 @@
             // Formato para Google / ICS: YYYYMMDDTHHMMSSZ
             const fmt = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
 
-            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(startDate)}/${fmt(endDate)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Próximamente en Parque Patricios')}`;
+            const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Turno Bell Studio: ' + serviceName)}&dates=${fmt(startDate)}/${fmt(endDate)}&details=${encodeURIComponent('Recordá la tolerancia de 15 min.')}&location=${encodeURIComponent('Combate de los Pozos 1680, Piso 7 Depto B, Buenos Aires')}`;
 
             // ICS Generation
             const icsContent = [
@@ -1139,7 +1139,7 @@
                 `DTEND:${fmt(endDate)}`,
                 `SUMMARY:Turno Bell Studio: ${serviceName}`,
                 'DESCRIPTION:Recordá la tolerancia de 15 min.',
-                'LOCATION:Próximamente en Parque Patricios',
+                'LOCATION:Combate de los Pozos 1680\, Piso 7 Depto B\, Buenos Aires',
                 'END:VEVENT',
                 'END:VCALENDAR'
             ].join('\r\n');

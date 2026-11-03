@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Static website for Bell Studio (masajes terapéuticos y entrenamiento, Argentina), served by GitHub Pages at `bellstudio.com.ar` (see `CNAME`). The site content and the docs are in Spanish (Argentine); keep user-facing text and commit messages in Spanish.
 
-There is **no build system, package manager, linter or test suite**. Every page is a hand-written, self-contained HTML file with inline `<style>` and `<script>`. To preview, open the file in a browser or serve the folder (`python3 -m http.server`). Changes pushed to the default branch are published directly.
+There is **no build system, package manager, linter or test suite**. Every page is a hand-written, self-contained HTML file with inline `<style>` and `<script>`. To preview, open the file in a browser or serve the folder (`python3 -m http.server`). Work happens directly on `main` (the owner's instruction); changes pushed to it are published directly by GitHub Pages.
 
 ## Files
 
@@ -15,6 +15,7 @@ There is **no build system, package manager, linter or test suite**. Every page 
 - `PENDIENTES_TURNERO.md` – detailed handoff notes on how the turnero works and the prioritized to-do list (read it before touching booking logic).
 - `apps-script/Codigo.gs` – hardened *template* of the Apps Script backend (validation, locking, rate limits, expiring unpaid holds). It is not deployed from here; it must be pasted into the Google Apps Script project by hand. `SCHEDULE`/`HOLIDAYS`/`BLOCKED_DATES`/`SERVICES` there must mirror `turnero.html`.
 - `SEO_Y_SEGURIDAD.md` – what SEO/security work exists and the owner's manual to-do list.
+- `PENDIENTES.md` – step-by-step task list written for a browser agent (Claude in Chrome): Google Business Profile, Analytics, Search Console. `MARCA_Y_CRECIMIENTO.md` – brand and growth plan. Business data (address, hours, phone) lives in `PENDIENTES.md`; keep it in sync with `index.html`.
 - `robots.txt`, `sitemap.xml` – update `sitemap.xml` when adding pages.
 - `automation_plan.md` – aspirational plan (n8n + Supabase + WhatsApp); **not implemented**. The real backend is the Google Apps Script described below.
 - `img/` – static images.
