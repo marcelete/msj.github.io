@@ -11,11 +11,11 @@
 **Seguridad**
 - `turnero.html` / `index.html`: política de contenido (CSP) por meta, `referrer`, SRI en Font Awesome, `rel="noopener"` en links externos.
 - `turnero.html`: campo trampa anti-bot, tiempo mínimo de llenado, máximo 2 reservas por navegador cada 24 h, `maxlength` en los campos, y ahora **lee la respuesta** del servidor (si el horario ya estaba tomado vuelve al paso 2).
-- `apps-script/Codigo.gs`: plantilla de backend endurecido (ver abajo). **Hasta que no la publiques, las protecciones reales del servidor NO están activas.**
+- `apps-script/Codigo.gs`: plantilla de backend endurecido (ver abajo). **Publicado y activo desde el 5/11/2026 (Apps Script v8): las protecciones del servidor ya están en producción.**
 
 ## Lo que tenés que hacer vos (en orden de impacto)
 
-1. **Publicar `apps-script/Codigo.gs`** en tu Apps Script: copiar, ajustar `SHEET_NAME`, `OWNER_EMAIL`, columnas y el texto de tus emails actuales, y publicar como *Implementar → Administrar implementaciones → editar → Nueva versión* (no "nueva implementación", cambia la URL). Con eso: candado anti-simultáneas, validación de día/hora/servicio, tope por hora, tope de pre-reservas por persona/email/teléfono, **pre-reservas sin seña que se liberan a las 24 h** (lo que frena a un bot que quiera llenarte la agenda) y protección contra fórmulas/HTML inyectados. Agregá una columna **Estado** y marcá "confirmado" a mano cuando llegue la seña.
+1. ✅ **HECHO (5/11/2026): `apps-script/Codigo.gs` publicado** como nueva versión de la implementación existente (v8). Activos: candado anti-simultáneas, validación de día/hora/servicio, tope por hora, tope de pre-reservas por persona, pre-reservas sin seña que vencen a las 24 h, horarios leídos de la planilla (pestañas "Horario semanal" y "Excepciones", ver ADMIN_HORARIOS.md) y columnas nuevas J (servicio) y K (estado: pendiente/confirmado/cancelado) en "Hoja 1".
 2. **La planilla**: dejala privada (solo vos), con verificación en 2 pasos en tu cuenta de Google. No la compartas con "cualquiera con el enlace". El Apps Script debe estar como *Ejecutar como: yo* / *Acceso: cualquier persona* (es lo que necesita el turnero), pero el GET solo devuelve fecha/hora/servicio, sin datos personales.
 3. **Google Search Console**: verificar bellstudio.com.ar, enviar `https://bellstudio.com.ar/sitemap.xml` y pedir indexar la home.
 4. **Perfil de Empresa en Google (Google Business Profile)**: es lo que más pesa para "masajes cerca de mí / Parque Patricios". La dirección (Combate de los Pozos 1680, Piso 7 Depto B) ya está en el sitio y en los datos estructurados; el paso a paso para crear y verificar el perfil está en `PENDIENTES.md` (Tema 1), pensado para que lo ejecute un agente en Chrome.
