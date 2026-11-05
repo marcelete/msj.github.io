@@ -3,7 +3,10 @@
 ## Novedades al 5/11/2026
 
 - [x] Search Console: sitio https://bellstudio.com.ar/ agregado y verificado con la cuenta bellizia.wellness.studio@gmail.com (etiqueta meta google-site-verification en index.html: NO borrarla) y sitemap.xml enviado.
-- [x] Analytics (G-EM5K1XNP3L) recibe datos; 0 eventos clave (falta marcar la reserva enviada del turnero como evento clave).
+- [x] Analytics movido a la cuenta bellizia.wellness.studio@gmail.com (5/11/2026): cuenta "Bell Studio", propiedad bellstudio.com.ar, ID de medición G-ZBFBKDN4E0 ya puesto en index.html y turnero.html. La propiedad vieja (G-EM5K1XNP3L, de marcebellizia@gmail.com) queda sin uso. Verificar en 24–48 h que lleguen datos.
+- [x] Search Console: se pidió la indexación de la home y de turnero.html.
+- [ ] Analytics: marcar la reserva enviada del turnero como evento clave (hoy 0 eventos clave).
+- [ ] Pendiente decidir: pasar la planilla/Apps Script (hoy en marcebellizia@gmail.com) a la cuenta del estudio; por ahora se dejan donde están.
 - [ ] Crear la cuenta de Instagram del negocio (el sitio enlaza instagram.com/bell.studio.arg: confirmar que exista y sea del negocio).
 - [ ] Agregar Google Analytics a la cuenta de Instagram (vincular la medición del perfil/enlace de Instagram con la propiedad de Analytics, por ejemplo con enlaces con UTM en la bio).
 - [ ] Google Business Profile: verificación (requiere video del dueño) y actualizar horarios.
