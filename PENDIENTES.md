@@ -9,7 +9,7 @@
 - [ ] Pendiente decidir: pasar la planilla/Apps Script (hoy en marcebellizia@gmail.com) a la cuenta del estudio; por ahora se dejan donde están.
 - [ ] Crear la cuenta de Instagram del negocio (el sitio enlaza instagram.com/bell.studio.arg: confirmar que exista y sea del negocio).
 - [ ] Agregar Google Analytics a la cuenta de Instagram (vincular la medición del perfil/enlace de Instagram con la propiedad de Analytics, por ejemplo con enlaces con UTM en la bio).
-- [ ] Google Business Profile: verificación por video. Guía para filmar en VIDEO_VERIFICACION_GOOGLE.md; recordatorio en el calendario de marcebellizia@gmail.com para el sábado 7/11/2026 a las 11:00. Después: actualizar horarios en el perfil.
+- [ ] Google Business Profile: verificación por video. Guía para filmar en VIDEO_VERIFICACION_GOOGLE.md; recordatorio en el calendario de marcebellizia@gmail.com para el sábado 7/11/2026 a las 11:00. Decisión (5/11): intentar primero con la dirección visible (el perfil ya existe sin verificar en la cuenta del estudio); si Google rechaza el video, pasar a negocio de servicios con dirección oculta y zona de servicio. Después: actualizar horarios en el perfil.
 
 Este archivo es una lista de tareas **para que las ejecute un agente de IA que maneja el navegador** (la extensión *Claude in Chrome*) con la sesión de Google del dueño ya abierta. También sirve como checklist para hacerlas a mano.
 
