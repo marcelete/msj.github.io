@@ -24,7 +24,7 @@ Este archivo es una lista de tareas **para que las ejecute un agente de IA que m
 | Sitio web | https://bellstudio.com.ar/ |
 | Reservas (link de turnos) | https://bellstudio.com.ar/turnero.html |
 | Instagram | https://instagram.com/bell.studio.arg |
-| Atención | **Solo con turno previo.** Lunes 10:00–11:30 y 20:00–24:00; miércoles 18:30–24:00; martes y jueves cerrado; fines de semana libres y feriados según la planilla (fin de semana común: vie 18:30–24, sáb y dom 8–24, lun 8–11:30; fin de semana largo/feriado: 8–24). Fuente de verdad: pestañas "Horario semanal" y "Excepciones" de la planilla (ver ADMIN_HORARIOS.md). **Pendiente: actualizar estos horarios en Google Business Profile e index.html.** |
+| Atención | **Solo con turno previo.** Lunes 10:00–11:30 y 20:00–24:00; miércoles 18:30–24:00; martes y jueves cerrado; fines de semana libres y feriados según la planilla (fin de semana común: vie 18:30–24, sáb y dom 8–24, lun 8–11:30; fin de semana largo/feriado: 8–24). Fuente de verdad: pestañas "Horario semanal" y "Excepciones" de la planilla (ver ADMIN_HORARIOS.md). index.html ya actualizado el 5/11/2026 (horarios y precio Express $45.000). **Pendiente: actualizar estos horarios en Google Business Profile.** |
 | Categoría principal | Masajista / Terapeuta de masajes (en inglés: *Massage therapist*) |
 | Categorías secundarias | Servicio de masajes, Entrenador personal, Centro de bienestar (usar solo las que Google ofrezca en la lista) |
 | Servicios | Masaje Express 60 min · Masaje Integral 90 min · Inmersión Total 120 min · Masaje a 4 manos 60 min · Entrenamiento personalizado 60 min |
