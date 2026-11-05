@@ -1,3 +1,35 @@
+# Turnero: estado al 5/11/2026 (esta sección manda)
+
+> Todo lo que está debajo de esta sección es la nota original del 4/11/2026. Varias tareas quedaron resueltas; acá está el estado real.
+
+## Hecho el 5/11/2026
+
+- **Apps Script v2 publicado** (versión 8 de la implementación; la URL no cambió). Copia exacta en `apps-script/Codigo.gs`. Incluye: candado contra reservas simultáneas, validación en el servidor (datos, fecha, horario y servicio), tope de 8 reservas por hora, máximo 3 pre-reservas sin seña por persona, pre-reservas sin seña que se liberan a las 24 h, protección contra fórmulas y HTML en la planilla y los emails, y respuestas JSON con `ok` y `reason` (`taken`, `closed`, `invalid`, `rate`, `limit`, `busy`, `server`). Los textos de los emails se conservaron.
+- **Planilla "Reservas Bell Studio"**: columnas nuevas J `servicio` y K `estado` en "Hoja 1" (estado vacío = confirmado, para las filas viejas), y pestañas nuevas `Horario semanal` y `Excepciones`. El script usa "Hoja 1" **por nombre**: no renombrarla.
+- **Horarios fuera del código**: se editan en la planilla (ver `ADMIN_HORARIOS.md`). Lunes 10:00–11:30 y 20:00–24:00, miércoles 18:30–24:00, más los fines de semana libres cargados como excepciones (hoy: 6 al 9/11/2026). Los turnos arrancan cada 30 min y tienen que terminar dentro del tramo; el último puede terminar a las 24:00.
+- **turnero.html** lee los horarios con `GET ?action=schedule`, usa el servicio de cada turno tomado para bloquear su duración real y, si no puede leer los horarios, no ofrece ningún turno. `SCHEDULE`, `BLOCKED_DATES` y `HOLIDAYS` ya no existen en el código.
+- **Validación estricta activa** (`ENFORCE_SCHEDULE = true`). Probado sin crear reservas: fuera de horario, martes y turno que pasa de medianoche devuelven `closed`; un horario superpuesto devuelve `taken`; datos inválidos devuelven `invalid`; el campo trampa responde ok sin escribir nada.
+
+### Estado de las tareas de abajo
+
+| Tarea | Estado |
+|---|---|
+| 2.1 Bloquear reservas simultáneas | Hecho en el Apps Script v2 (candado + chequeo de superposición) |
+| 2.2 El GET informa el servicio | Hecho. Los turnos viejos sin servicio se asumen de 90 min |
+| 2.3 Feriados 2027 | Ya no hay lista en el código: se cargan como filas en `Excepciones` cuando corresponda |
+| 2.4 Bloquear fines de semana no atendidos | Reemplazado: los fines de semana **no** figuran en el horario semanal, así que solo se atiende en los que se cargan en `Excepciones` |
+
+## Pendiente
+
+1. **Cargar en `Excepciones` los próximos fines de semana libres y largos.** Hoy solo está el del 6 al 9/11/2026. Si no se carga un fin de semana, ese fin de semana no se puede reservar.
+2. **Probar una reserva real completa** (con un email propio) y borrar la fila de prueba de la planilla.
+3. **Actualizar los horarios publicados**: `index.html` (texto, FAQ y JSON-LD) y el perfil de Google siguen con el horario viejo (miércoles y viernes 19–22, fines de semana 7–13).
+4. En la columna K de la planilla hay que pasar a mano de `pendiente` a `confirmado` cuando llega la seña; si no, la pre-reserva se libera a las 24 h.
+5. Opcional: Cloudflare Turnstile contra bots.
+6. Detalle de diseño: un turno que termina a medianoche se muestra como "22:00 - 00:00".
+
+---
+
 # Turnero: pendientes para mañana (miércoles 4/11/2026)
 
 Esta nota sirve para retomar el turnero sin tener que reconstruir el contexto. Cuenta cómo funciona hoy, qué se arregló el 3/11 y qué falta hacer, por orden de prioridad. En cada tarea se indica qué archivo se toca y cómo probarlo sin romper lo que ya anda.
