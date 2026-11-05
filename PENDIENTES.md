@@ -1,5 +1,13 @@
 # PENDIENTES — Instrucciones para un agente (Claude en Chrome)
 
+## Novedades al 5/11/2026
+
+- [x] Search Console: sitio https://bellstudio.com.ar/ agregado y verificado con la cuenta bellizia.wellness.studio@gmail.com (etiqueta meta google-site-verification en index.html: NO borrarla) y sitemap.xml enviado.
+- [x] Analytics (G-EM5K1XNP3L) recibe datos; 0 eventos clave (falta marcar la reserva enviada del turnero como evento clave).
+- [ ] Crear la cuenta de Instagram del negocio (el sitio enlaza instagram.com/bell.studio.arg: confirmar que exista y sea del negocio).
+- [ ] Agregar Google Analytics a la cuenta de Instagram (vincular la medición del perfil/enlace de Instagram con la propiedad de Analytics, por ejemplo con enlaces con UTM en la bio).
+- [ ] Google Business Profile: verificación (requiere video del dueño) y actualizar horarios.
+
 Este archivo es una lista de tareas **para que las ejecute un agente de IA que maneja el navegador** (la extensión *Claude in Chrome*) con la sesión de Google del dueño ya abierta. También sirve como checklist para hacerlas a mano.
 
 > Los pendientes del código del turnero están aparte, en `PENDIENTES_TURNERO.md`. El plan de marca y crecimiento está en `MARCA_Y_CRECIMIENTO.md`. Lo hecho en SEO y seguridad está en `SEO_Y_SEGURIDAD.md`.
