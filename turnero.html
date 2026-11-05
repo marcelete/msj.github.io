@@ -467,7 +467,7 @@
         // ================================================================
         // Backend en Google Apps Script (NO se modificó): registra la reserva
         // en la planilla y envía los emails al dueño y al cliente.
-        //   GET  → lista de turnos tomados ("fecha|hora")
+        //   GET  → lista de turnos tomados ("fecha|hora|servicio"); GET ?action=schedule → horarios de atención
         //   POST → nueva reserva (mismo formato de siempre)
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwduTI9apkTEuufQsfEIyxGOX4zcO0EyYNXbhqHZsgz-2I1Fcjpj1bGlHiOaVaOxW4lHA/exec'
         const ALIAS_MP = "bell.studio";
@@ -478,46 +478,19 @@
         const STUDIO_TZ = 'America/Argentina/Buenos_Aires';
         const STUDIO_UTC_OFFSET = '-03:00'; // Argentina no usa horario de verano
 
-        // Agenda semanal (0 = domingo, 1 = lunes … 6 = sábado).
-        // Los feriados usan el horario de fin de semana.
-        const SCHEDULE = {
-            weekday: { days: [3, 5],  slots: ['19:00 - 20:30', '20:30 - 22:00'] },
-            weekend: { days: [0, 6],  slots: ['07:00 - 08:30', '08:30 - 10:00', '10:00 - 11:30', '11:30 - 13:00'] }
-        };
-
-        // Fechas puntuales SIN atención (vacaciones, fines de semana libres, etc.).
-        // Formato 'AAAA-MM-DD'. Ej: '2026-12-31'
-        const BLOCKED_DATES = [
-        ];
+        // Duración de cada servicio (minutos). Los horarios de atención ya no están acá:
+        // se editan en la planilla (pestañas "Horario semanal" y "Excepciones") y se leen desde el Apps Script.
+        const SERVICE_MINUTES = { sesion60: 60, sesion90: 90, sesion120: 120, '4manos': 60, entrenamiento: 60 };
 
         // Anticipación mínima (en minutos) para reservar un turno del mismo día.
         // 0 = se puede reservar hasta que el turno empiece.
         const MIN_NOTICE_MINUTES = 0;
 
-        // La lista de turnos tomados no dice qué servicio se reservó, así que
-        // cada turno ocupado bloquea un bloque completo de agenda (90 min).
+        // Duración que se asume para turnos viejos o sin servicio en la planilla (90 min).
         const BOOKED_SLOT_MINUTES = 90;
 
         // Si la disponibilidad descargada tiene más de 15 s, se vuelve a pedir.
         const AVAILABILITY_MAX_AGE_MS = 15000;
-
-        // FERIADOS ARGENTINA 2026 (Hardcoded para evitar API calls)
-        const HOLIDAYS = [
-            "2026-01-01", // Año Nuevo
-            "2026-02-16", // Carnaval
-            "2026-02-17", // Carnaval
-            "2026-03-24", // Memoria
-            "2026-04-02", // Malvinas
-            "2026-05-01", // Trabajador
-            "2026-05-25", // Revolución
-            "2026-06-20", // Bandera
-            "2026-07-09", // Independencia
-            "2026-08-17", // San Martín
-            "2026-10-12", // Diversidad
-            "2026-11-20", // Soberanía
-            "2026-12-08", // Inmaculada
-            "2026-12-25"  // Navidad
-        ];
 
         // Traducciones
         const i18n = {
@@ -630,6 +603,7 @@
 
         // Turnos tomados por fecha: { 'AAAA-MM-DD': [minutos de inicio, ...] }
         const availability = { ok: false, fetchedAt: 0, byDate: {} };
+        let scheduleConfig = null; // horarios de atención (vienen de la planilla, vía Apps Script)
         const sessionBookings = []; // reservas hechas desde esta pestaña
 
         // Protección básica contra abuso (el control real está en el Apps Script):
@@ -692,12 +666,12 @@
             let parsed = 0;
             const unknown = [];
             list.forEach(entry => {
-                const [rawDate = '', rawTime = ''] = String(entry ?? '').split('|');
+                const [rawDate = '', rawTime = '', rawService = ''] = String(entry ?? '').split('|');
                 if (!rawDate.trim() && !rawTime.trim()) return; // fila vacía en la planilla
                 const key = parseBookedDate(rawDate);
                 const minutes = parseBookedTime(rawTime);
                 if (key === null || minutes === null) { unknown.push(entry); return; }
-                (byDate[key] = byDate[key] || []).push(minutes);
+                (byDate[key] = byDate[key] || []).push({ start: minutes, duration: SERVICE_MINUTES[rawService.trim()] || BOOKED_SLOT_MINUTES });
                 parsed++;
             });
             if (unknown.length) console.warn('[Turnero] Turnos con formato no reconocido:', unknown);
@@ -713,10 +687,18 @@
                 const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
                 const timer = controller ? setTimeout(() => controller.abort(), 20000) : null;
                 try {
-                    const response = await fetch(GOOGLE_SCRIPT_URL, { cache: 'no-store', signal: controller ? controller.signal : undefined });
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const data = await response.json();
-                    if (!Array.isArray(data)) throw new Error('Respuesta inesperada del servidor');
+                    const fetchOpts = { cache: 'no-store', signal: controller ? controller.signal : undefined };
+                const [response, scheduleResponse] = await Promise.all([
+                    fetch(GOOGLE_SCRIPT_URL, fetchOpts),
+                    fetch(GOOGLE_SCRIPT_URL + '?action=schedule', fetchOpts)
+                ]);
+                if (!response.ok || !scheduleResponse.ok) throw new Error('HTTP ' + response.status + ' / ' + scheduleResponse.status);
+                const data = await response.json();
+                const cfg = await scheduleResponse.json();
+                if (!Array.isArray(data)) throw new Error('Respuesta inesperada del servidor');
+                // Sin horarios de atención válidos no se ofrece ningún turno (falla cerrada).
+                if (!cfg || !cfg.configured || !Array.isArray(cfg.weekly) || !Array.isArray(cfg.exceptions)) throw new Error('Horarios de atención no configurados');
+                scheduleConfig = cfg;
 
                     const { byDate, parsed } = buildOccupancy(data);
                     // Si hay turnos pero no se pudo leer ninguno, es más seguro no ofrecer
@@ -724,7 +706,7 @@
                     if (data.length > 0 && parsed === 0) throw new Error('Formato de turnos no reconocido');
 
                     // Lo reservado desde esta pestaña sigue bloqueado aunque la planilla tarde en reflejarlo.
-                    sessionBookings.forEach(b => (byDate[b.key] = byDate[b.key] || []).push(b.minutes));
+                    sessionBookings.forEach(b => (byDate[b.key] = byDate[b.key] || []).push({ start: b.minutes, duration: b.duration || BOOKED_SLOT_MINUTES }));
 
                     availability.byDate = byDate;
                     availability.ok = true;
@@ -758,20 +740,32 @@
 
         const getServiceMinutes = () => Number(serviceOption().dataset.duration) || BOOKED_SLOT_MINUTES;
 
-        // Horarios de inicio que ofrece la agenda para esa fecha (sin mirar ocupación).
-        function getDayStarts(key) {
-            if (BLOCKED_DATES.includes(key)) return [];
+        // Tramos de atención de una fecha según la planilla: si la fecha figura en "Excepciones",
+        // esos tramos reemplazan al horario semanal de ese día.
+        function getDayRanges(key) {
+            if (!scheduleConfig) return [];
+            const exceptions = scheduleConfig.exceptions.filter(x => x.date === key);
+            if (exceptions.length) return exceptions.filter(x => !x.closed);
             const dow = dayOfWeek(key);
-            let slots = [];
-            if (HOLIDAYS.includes(key) || SCHEDULE.weekend.days.includes(dow)) slots = SCHEDULE.weekend.slots;
-            else if (SCHEDULE.weekday.days.includes(dow)) slots = SCHEDULE.weekday.slots;
-            return slots.map(slot => slot.split(' - ')[0].trim());
+            return scheduleConfig.weekly.filter(w => w.dow === dow);
+        }
+
+        // Horarios de inicio que ofrece la agenda para esa fecha con el servicio elegido
+        // (sin mirar ocupación): cada 30 minutos y de modo que el servicio termine dentro del tramo.
+        function getDayStarts(key) {
+            const step = (scheduleConfig && scheduleConfig.step) || 30;
+            const duration = getServiceMinutes();
+            const starts = new Set();
+            getDayRanges(key).forEach(range => {
+                for (let m = Math.ceil(range.from / step) * step; m + duration <= range.to; m += step) starts.add(fromMinutes(m));
+            });
+            return [...starts].sort();
         }
 
         // ¿El servicio elegido, empezando a esa hora, se superpone con algún turno tomado?
         function isSlotTaken(key, startMin, durationMin) {
             return (availability.byDate[key] || []).some(booked =>
-                booked < startMin + durationMin && startMin < booked + BOOKED_SLOT_MINUTES
+                booked.start < startMin + durationMin && startMin < booked.start + booked.duration
             );
         }
 
@@ -1209,7 +1203,7 @@
             const dateStr = `${selectedDate.day}/${selectedDate.month + 1}/${selectedDate.year}`;
             const startTime = selectedTime;
             const timeLabel = slotLabel(startTime);
-            const booking = { key: selectedDate.key, minutes: toMinutes(startTime) };
+            const booking = { key: selectedDate.key, minutes: toMinutes(startTime), duration: getServiceMinutes() };
 
             const formData = {
                 firstName: document.getElementById('firstName').value.trim(),
@@ -1243,10 +1237,12 @@
 
                 if (result && result.ok === false) {
                     stopLoading();
-                    if (result.reason === 'taken') {
+                    if (result.reason === 'taken' || result.reason === 'closed') {
                         await refreshAvailability(true);
                         revalidateSelection('taken');
                         document.getElementById('timeSlots').closest('.section-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else if (result.reason === 'invalid' || result.reason === 'server') {
+                        showAlert('formAlert', t('alerts.connection'));
                     } else {
                         showAlert('formAlert', t('alerts.limit'));
                     }
@@ -1256,7 +1252,7 @@
 
                 // El turno queda bloqueado en esta pestaña de inmediato
                 sessionBookings.push(booking);
-                (availability.byDate[booking.key] = availability.byDate[booking.key] || []).push(booking.minutes);
+                (availability.byDate[booking.key] = availability.byDate[booking.key] || []).push({ start: booking.minutes, duration: booking.duration });
 
                 // 3. Preparar Pantalla de Éxito
                 document.getElementById('confirmAmount').textContent = `$${depositStr}`;
