@@ -33,7 +33,12 @@ Fuente: https://support.google.com/business/answer/14271705 (leída el 5/11/2026
 - Si no funciona, probar otro método de verificación antes de escribir a soporte.
 - Se puede borrar el video después desde Ajustes de Perfil de Empresa > Ajustes avanzados > Subida de vídeos.
 
-## Para decidir antes de grabar
+## Decisión tomada (5/11/2026): primero se intenta con la dirección visible
 
-- Si atendés en tu departamento sin letrero fijo, Google pide registrarlo como negocio de servicios y no mostrar la dirección al público. Confirmar cómo está dado de alta hoy el perfil y ajustar el tipo antes de grabar.
-- Si el perfil figura como local con dirección visible y no tenés un letrero permanente, es probable que el video sea rechazado.
+El perfil "Bell Studio" ya existe en la cuenta bellizia.wellness.studio@gmail.com, sin verificar, con la dirección completa visible (Combate de los Pozos 1680, Piso 7, Depto B). Se decidió correr el riesgo primero y buscar el camino seguro después.
+
+- Intento 1: grabar el video con la dirección visible, mostrando todo lo del guion (calle, edificio, espacio de trabajo, nombre Bell Studio en una tarjeta o cartel y prueba de que el dueño sos vos).
+- Riesgo conocido: Google pide un cartel o nombre permanente en el frente para los locales; como no hay cartel, puede rechazarlo.
+- Si lo rechazan (revisión de hasta 5 días hábiles): pasar a negocio de servicios con la dirección oculta y zona de servicio (Parque Patricios, Barracas, Pompeya), y grabar de nuevo siguiendo el guion de servicios.
+- Costo de ocultarla: el perfil sale sin pin en Maps y puede perder algo de ventaja en búsquedas por cercanía. Se compensa con categorías y servicios bien cargados, fotos reales y reseñas.
+- Privacidad: mientras la dirección sea visible, se publica también "Piso 7, Depto B". Valorar sacar piso y departamento del perfil.
